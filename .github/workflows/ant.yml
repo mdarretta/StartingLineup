@@ -27,5 +27,7 @@ jobs:
       run: ant -noinput -buildfile build.xml compile
     - name: Create jar
       run: ant -noinput -buildfile build.xml jar
+    - name: Show contents of jar
+      run: ant -noinput -buildfile build.xml showjar
     - name: Execute jar
       run: ant -noinput -buildfile build.xml run
