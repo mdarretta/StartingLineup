@@ -61,8 +61,10 @@ public class Driver {
     		run();
     	}
     	
-        Standings.getInstance().normalizeStats(numSeasonsToModel);
-        BatterStatsMap.getInstance().updateStatsForSingleSeason(numSeasonsToModel);
+        if (numSeasonsToModel > 1) {
+            Standings.getInstance().normalizeStats(numSeasonsToModel);
+            BatterStatsMap.getInstance().updateStatsForSingleSeason(numSeasonsToModel);
+        }
         
         System.out.println();
         System.out.println("Leaders by BA");
