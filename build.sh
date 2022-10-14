@@ -1,4 +1,7 @@
-javac -Xlint:unchecked -d .  ./src/org/startinglineup/*.java ./src/org/startinglineup/component/*.java ./src/org/startinglineup/controller/*.java ./src/org/startinglineup/data/*.java ./src/org/startinglineup/event/*.java ./src/org/startinglineup/league/*.java ./src/org/startinglineup/simulator/*.java ./src/org/startinglineup/utils/*.java 
+SRC_PATH=./src/org/startinglineup
 
-jar cfe startinglineup.jar org.startinglineup.Driver ./org/startinglineup/* ./conf/* ./data/*
+javac -Xlint:unchecked -d .  $SRC_PATH/*.java $SRC_PATH/component/*.java $SRC_PATH/controller/*.java $SRC_PATH/data/*.java $SRC_PATH/event/*.java $SRC_PATH/league/*.java $SRC_PATH/simulator/*.java $SRC_PATH/utils/*.java 
 
+jar cfe startinglineup.jar org.startinglineup.Driver ./org/startinglineup/* ./conf/* ./data/* ./doc/*
+
+javadoc -sourcepath $SRC_PATH/*.java $SRC_PATH/component/*.java $SRC_PATH/controller/*.java $SRC_PATH/data/*.java $SRC_PATH/event/*.java $SRC_PATH/league/*java $SRC_PATH/simulator/*.java $SRC_PATH/utils/*.java -d doc
