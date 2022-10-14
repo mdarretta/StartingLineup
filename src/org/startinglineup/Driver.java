@@ -15,8 +15,6 @@ import org.startinglineup.simulator.Standings;
 
 import java.io.File;
 
-Hello
-
 public class Driver {
 	
     public static void main(String[] args) {
