@@ -7,7 +7,12 @@
     <target name="compile">
         <mkdir dir="build/classes"/>
         <copy file="conf" todir="build/classes/conf"/>
-        <copy file="data" todir="build/classes/conf"/>
+        <copy todir="build/classes/conf">
+            <fileset dir="conf" includes="**" />
+        </copy>        
+        <copy todir="build/classes/data">
+            <fileset dir="data" includes="**" />
+        </copy>        
         <javac srcdir="src" destdir="build/classes"/>
     </target>
 
