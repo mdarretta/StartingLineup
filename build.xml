@@ -6,6 +6,8 @@
 
     <target name="compile">
         <mkdir dir="build/classes"/>
+        <copyDir src="conf" dest="build/classes/conf">
+        <copyDir src="data" dest="build/classes/conf">
         <javac srcdir="src" destdir="build/classes"/>
     </target>
 
@@ -13,7 +15,7 @@
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/startinglineup.jar" 
              basedir="build/classes"
-             includes="org/**,../../conf/**,../../data/**">
+             includes="org/**,conf/**,data/**">
             <manifest>
                 <attribute name="Main-Class" value="org.startinglineup.Driver"/>
             </manifest>
