@@ -1,8 +1,8 @@
 <project>
 
-    <target name="clean">
+    <!-- target name="clean">
         <delete dir="build"/>
-    </target>
+    </target -->
 
     <target name="compile">
         <mkdir dir="build/classes"/>
