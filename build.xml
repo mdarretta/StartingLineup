@@ -13,10 +13,10 @@
         <mkdir dir="build/jar"/>
         <mkdir dir="build/classes/conf"/>
         <mkdir dir="build/classes/data"/>
-        <copy todir="build/classes">
+        <copy todir="build/classes/conf">
             <fileset dir="conf" includes="**"/>
         </copy>        
-        <copy todir="build/classes">
+        <copy todir="build/classes/data">
             <fileset dir="data" includes="**"/>
         </copy>        
         <jar destfile="build/jar/startinglineup.jar" 
