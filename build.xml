@@ -6,7 +6,6 @@
 
     <target name="compile">
         <mkdir dir="build/classes"/>
-        <copy file="conf" todir="build/classes/conf"/>
         <copy todir="build/classes/conf">
             <fileset dir="conf" includes="**" />
         </copy>        
