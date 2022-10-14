@@ -11,6 +11,8 @@
 
     <target name="jar">
         <mkdir dir="build/jar"/>
+        <mkdir dir="build/classes/conf"/>
+        <mkdir dir="build/classes/data"/>
         <copy todir="build/classes">
             <fileset dir="conf" includes="**"/>
         </copy>        
