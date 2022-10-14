@@ -13,8 +13,7 @@
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/startinglineup.jar" 
              basedir="build/classes"
-             includes="conf/**"
-             includes="data/**">
+             includes="conf/**,data/**">
             <manifest>
                 <attribute name="Main-Class" value="org.startinglineup.Driver"/>
             </manifest>
