@@ -19,7 +19,7 @@
         <copy todir="build/classes/data">
             <fileset dir="data" includes="**"/>
         </copy>        
-        <jar destfile="build/jar/startinglineup.jar" 
+        <jar destfile="startinglineup.jar" 
              basedir="build/classes"
              includes="org/** conf/** data/**">
             <manifest>
@@ -31,12 +31,12 @@
     <target name="showjar" depends="jar" description="Show content of the jar file">
         <exec executable="/usr/bin/unzip">
             <arg value="-v"/>
-            <arg value="build/jar/startinglineup.jar"/>
+            <arg value="startinglineup.jar"/>
         </exec>
     </target>
 
     <target name="run">
-        <java jar="build/jar/startinglineup.jar" fork="true"/>
+        <java jar="startinglineup.jar" fork="true"/>
     </target>
 
 </project>
