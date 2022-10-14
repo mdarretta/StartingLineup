@@ -1,9 +1,0 @@
-name: build-execute-startinglineup
-run-name: Building and executing StartingLineup
-on: [push]
-jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
-    steps:
-      - run: build.sh
-      - run: run.sh
