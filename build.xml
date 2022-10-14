@@ -6,8 +6,8 @@
 
     <target name="compile">
         <mkdir dir="build/classes"/>
-        <copyDir src="conf" dest="build/classes/conf">
-        <copyDir src="data" dest="build/classes/conf">
+        <copyDir src="conf" dest="build/classes/conf"/>
+        <copyDir src="data" dest="build/classes/conf"/>
         <javac srcdir="src" destdir="build/classes"/>
     </target>
 
