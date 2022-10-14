@@ -6,17 +6,17 @@
 
     <target name="compile">
         <mkdir dir="build/classes"/>
-        <copy todir="build/classes">
-            <fileset dir="conf" includes="**" />
-        </copy>        
-        <copy todir="build/classes">
-            <fileset dir="data" includes="**" />
-        </copy>        
         <javac srcdir="src" destdir="build/classes"/>
     </target>
 
     <target name="jar">
         <mkdir dir="build/jar"/>
+        <copy todir="build/classes">
+            <fileset dir="conf" includes="**"/>
+        </copy>        
+        <copy todir="build/classes">
+            <fileset dir="data" includes="**"/>
+        </copy>        
         <jar destfile="build/jar/startinglineup.jar" 
              basedir="build/classes"
              includes="org/** conf/** data/**">
