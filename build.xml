@@ -25,6 +25,13 @@
             </manifest>
         </jar>
     </target>
+    
+    <target name="showjar" depends="jar" description="Show content of the jar file">
+        <exec executable="/usr/bin/unzip">
+            <arg value="-v"/>
+            <arg value="build/jar/startinglineup.jar"/>
+        </exec>
+    </target>
 
     <target name="run">
         <java jar="build/jar/startinglineup.jar" fork="true"/>
