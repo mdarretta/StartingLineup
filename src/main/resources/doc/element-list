@@ -1,0 +1,8 @@
+org.startinglineup
+org.startinglineup.component
+org.startinglineup.controller
+org.startinglineup.data
+org.startinglineup.event
+org.startinglineup.league
+org.startinglineup.simulator
+org.startinglineup.utils

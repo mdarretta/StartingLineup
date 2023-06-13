@@ -107,7 +107,6 @@ public class Team extends UniqueComponent {
     }
     
     /**
-     * @Override
      * Returns the hash code for the unique abbreviation string.
      * @return The hash code for the unique abbreviation string.
      */
