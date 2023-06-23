@@ -1,2 +1,2 @@
 cd target
-java -Xms4095m -Xmx4096m -jar startinglineup-1.0.jar
+java -Xms4096m -Xmx4096m -jar startinglineup-1.0.jar

@@ -62,7 +62,8 @@ public class TemplateReader extends CSVImport {
 	    		} else if (isDerived) {
 	    			String[] classes = fieldClassName.split(Template.DELIMITER_STR);
 	    			Class<?> derivedClass = Class.forName(classes[0]);
-	    			UniqueComponent currentObj =  (UniqueComponent) Class.forName(classes[1]).newInstance();
+	    			UniqueComponent currentObj =  (UniqueComponent) Class.forName(
+	    					classes[1]).getDeclaredConstructor().newInstance();
 	    			
 	    			currentObj = populateField(currentObj, data, item.getSubclassFieldName(), isRecursive);
 	    			Constructor<?> cons = derivedClass.getConstructor(currentObj.getClass());
@@ -111,6 +112,7 @@ public class TemplateReader extends CSVImport {
 			throws IllegalAccessException {
 		
 		Field field = getField(target.getClass(), fieldName);
+		
 		field.setAccessible(true);
 		field.set(target, value);
 		return target;

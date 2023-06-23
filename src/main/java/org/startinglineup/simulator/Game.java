@@ -1,5 +1,6 @@
 package org.startinglineup.simulator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -112,11 +113,12 @@ public class Game extends UniqueComponent {
     }
 
     private Outcome getNextOutcome(Batter batter, Pitcher pitcher) 
-    		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-    	
+    		throws InstantiationException, IllegalAccessException, IllegalArgumentException, 
+    		InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+    
     	String className = Properties.getInstance().get(Properties.AT_BAT_RESULT_GENERATOR_CLASS_PROP);
     	AtBatResultGenerator atBatResultGenerator = 
-    			(AtBatResultGenerator) Class.forName(className).newInstance();
+    			(AtBatResultGenerator) Class.forName(className).getDeclaredConstructor().newInstance();
             atBatResultGenerator.initialize(new AtBat(batter, pitcher));
     	
         return atBatResultGenerator.getOutcome();

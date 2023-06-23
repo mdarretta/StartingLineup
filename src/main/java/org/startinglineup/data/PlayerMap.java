@@ -1,5 +1,6 @@
 package org.startinglineup.data;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.startinglineup.component.Player;
@@ -42,9 +43,17 @@ class PlayerMap {
 		}
 	}
 	
+	public HashMap<String, Player> getMap() {
+		return playerMap;
+	}
+	
+	public Collection<Player> getAll() {
+		return playerMap.values();
+	}
+	
 	private String getKey(String lastname, String firstname) {
 		// Create a temporary player object, then return the formatted name
-		Player player = new Player(lastname, firstname, Handed.RIGHT);
+		Player player = new Player(lastname, firstname, Handed.RIGHT, null);
 		return player.getFormattedName();
 	}
 

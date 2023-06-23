@@ -82,7 +82,17 @@ public class BatterStatsMap {
 	public Collection<BatterStats> getStatsByOPS() {
 		return getSortedStats(SORT_BY_OPS);
 	}
-
+	
+	/*
+	 * public Collection<Batter> getBatters() { Collection<BatterStats> stats =
+	 * this.map.values(); Iterator<BatterStats> i = stats.iterator();
+	 * Collection<Batter> batters = new ArrayList<Batter>(); while (i.hasNext()) {
+	 * batters.add(i.next().getBatter()); }
+	 * 
+	 * return batters; 
+	 * }
+	 */
+	
 	private Collection<BatterStats> getSortedStats(int sortType) {
 		List<BatterStatsComparable> stats = new ArrayList<BatterStatsComparable>();
 		Iterator<BatterStats> i = map.values().iterator();

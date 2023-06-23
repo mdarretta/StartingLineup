@@ -16,7 +16,7 @@ class RunsController extends Observable {
         this.diamond = new Diamond();
         addObserver(inningsCtrl);
     }
-
+    
     void addOutcome(Outcome outcome) {
         if (outcome.isHit()) {
             advanceRunners(outcome);

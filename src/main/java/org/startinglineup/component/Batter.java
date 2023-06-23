@@ -15,10 +15,11 @@ public class Batter extends Player {
 	private int rbis = 0;
 	private boolean normalize;
 	
-	// @todo Implement these unused attributes
 	/*
-	private float homeAverage = 0F;
-	private float awayAverage = 0F;
+	 * @todo Implement these unused attributes
+	 *
+	 * private float homeAverage = 0F;
+	 * private float awayAverage = 0F;
 	*/
 
 	public Batter() {
@@ -26,23 +27,22 @@ public class Batter extends Player {
 	}
 
 	public Batter(String lastname, String firstname, Handed handed) {
-		this(lastname, firstname, handed, true);
+	        this(lastname, firstname, handed, null);
 	}
-	
-	public Batter(String lastname, String firstname, Handed handed, boolean normalize) {
-		super(lastname, firstname, handed);
-		this.normalize = normalize;
-	}
+
+        public Batter(String lastname, String firstname, Handed handed, AdvancedMetrics advancedMetrics) {
+                super(lastname, firstname, handed, advancedMetrics);
+        }
 
 	public Batter(String lastname, String firstname, Handed handed, int plateAppearances, int walks, 
 			int hbp, int singles, int doubles, int triples, int homeRuns) {
-		this(lastname, firstname, handed, plateAppearances, walks, hbp, singles, doubles, triples, homeRuns, true);
-	}
-	
-	public Batter(String lastname, String firstname, Handed handed, int plateAppearances, int walks, 
-			int hbp, int singles, int doubles, int triples, int homeRuns, boolean normalize) {
+                this(lastname, firstname, handed, plateAppearances, walks, hbp, singles, doubles, triples, homeRuns, null);
+        }
 
-		this(lastname, firstname, handed, normalize);
+	public Batter(String lastname, String firstname, Handed handed, int plateAppearances, int walks, 
+			int hbp, int singles, int doubles, int triples, int homeRuns, AdvancedMetrics advancedMetrics) {
+
+                this(lastname, firstname, handed, advancedMetrics);
 
 		// Remove HBP from the total plate appearances
 		this.plateAppearances = plateAppearances - hbp;
@@ -156,6 +156,10 @@ public class Batter extends Player {
 	public void addRbis(int rbis) {
 		this.rbis += rbis;
 	}
+
+        public void setNormalize(boolean normalize) {
+            this.normalize = normalize;
+        }
 	
 	public boolean isNormalizable() {
 		return normalize;

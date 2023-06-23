@@ -30,10 +30,11 @@ public class ScheduleImport extends TemplattedFileImport {
 	public ScheduleImport(File file) throws FileImportException, ParseException {
 		
 		super(file);
+                Schedule.getInstance().clear();
 		teamGameNumberMap = new HashMap<String, Integer>();
 		
         DateFormat format = new SimpleDateFormat("M/d/yy", Locale.ENGLISH);
-		
+
         String startingDateStr = Properties.getInstance().get(Properties.STARTING_DATE_TO_MODEL_PROP);
         String endingDateStr = Properties.getInstance().get(Properties.ENDING_DATE_TO_MODEL_PROP);
         String startingGameStr = Properties.getInstance().get(Properties.STARTING_GAME_TO_MODEL_PROP);
@@ -69,6 +70,7 @@ public class ScheduleImport extends TemplattedFileImport {
 	}
 	
 	protected void processTarget(UniqueComponent target) throws StartingLineupException {
+
 		try {
 			game = (Game) reader.getCurrentTarget();
         	game = (Game) reader.populateDerivedItem(hiddenItem, hiddenData, game);
@@ -137,7 +139,7 @@ public class ScheduleImport extends TemplattedFileImport {
 	
 	private void updateMapForKey(String team) {
 		if (teamGameNumberMap.get(team) == null) {
-			teamGameNumberMap.put(team, new Integer(1));
+			teamGameNumberMap.put(team, Integer.valueOf(1));
 		} else {
 			int gameNumber = teamGameNumberMap.get(team).intValue();
 			teamGameNumberMap.replace(team, (gameNumber+1));
@@ -146,7 +148,7 @@ public class ScheduleImport extends TemplattedFileImport {
 	
 	private void rollbackMapForKey(String team) {
 		int gameNumber = teamGameNumberMap.get(team).intValue();
-		teamGameNumberMap.replace(team, new Integer(gameNumber-1));
+		teamGameNumberMap.replace(team, Integer.valueOf(gameNumber-1));
 	}
 	
 	private boolean isWithinGamesToModel(String team, int startingGame, int endingGame) {

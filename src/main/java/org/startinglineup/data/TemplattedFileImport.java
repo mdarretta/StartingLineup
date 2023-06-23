@@ -37,14 +37,15 @@ public abstract class TemplattedFileImport extends CSVImport {
             	if (item == null) {
             		continue;
             	}
-            	
+        		
             	if (item.isRecursive()) {
             		recursiveItem = item;
             		recursiveData = data[dataIdx++];
             	} else if (item.isHidden()) {
             		hiddenItem = item;
             	} else if (item.isTarget()) {
-            		target = (UniqueComponent) Class.forName(item.getFieldClassName()).newInstance();
+            		target = (UniqueComponent) Class.forName(
+            				item.getFieldClassName()).getDeclaredConstructor().newInstance();
             		if (instantiateTarget(target)) {
             			reader.setCurrentTarget(target);
             		}

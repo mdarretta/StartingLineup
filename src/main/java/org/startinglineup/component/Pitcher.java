@@ -6,10 +6,10 @@ public class Pitcher extends Batter {
 
 	private float whip;
 	private Handed handed;
-	
+
 	private int inningsPitched;
 	private int walksAllowed;
-	private int hbpAllowed;
+
 	private int singlesAllowed;
 	private int doublesAllowed;
 	private int triplesAllowed;
@@ -28,40 +28,39 @@ public class Pitcher extends Batter {
 	}
 
 	public Pitcher(Batter batter, Handed handed, float whip) {
-		super(batter.getLastname(), batter.getFirstname(), batter.getHanded(), batter.getPlateAppearances(), batter.getWalks(),
-				batter.getHbp(), batter.getSingles(), batter.getDoubles(), batter.getTriples(), batter.getHomeRuns());
+		super(batter.getLastname(), batter.getFirstname(), batter.getHanded(), batter.getPlateAppearances(),
+				batter.getWalks(), batter.getHbp(), batter.getSingles(), batter.getDoubles(), batter.getTriples(),
+				batter.getHomeRuns());
 		this.handed = handed;
 		this.whip = whip;
 	}
 
-	public Pitcher(Batter batter, Handed handed, float whip, int inningsPitched, int walksAllowed,
-			int hbpAllowed, int singlesAllowed, int doublesAllowed, int triplesAllowed,
-			int homeRunsAllowed) {
-		super(batter.getLastname(), batter.getFirstname(), batter.getHanded(), batter.getPlateAppearances(), batter.getWalks(),
-				batter.getHbp(), batter.getSingles(), batter.getDoubles(), batter.getTriples(), batter.getHomeRuns());
+	public Pitcher(Batter batter, Handed handed, float whip, int inningsPitched, int walksAllowed, int hbpAllowed,
+			int singlesAllowed, int doublesAllowed, int triplesAllowed, int homeRunsAllowed) {
+		super(batter.getLastname(), batter.getFirstname(), batter.getHanded(), batter.getPlateAppearances(),
+				batter.getWalks(), batter.getHbp(), batter.getSingles(), batter.getDoubles(), batter.getTriples(),
+				batter.getHomeRuns());
 		this.handed = handed;
 		this.whip = whip;
 		this.inningsPitched = inningsPitched;
 		this.walksAllowed = walksAllowed;
-		this.hbpAllowed = hbpAllowed;
-		this.singlesAllowed = singlesAllowed;
-		this.doublesAllowed = doublesAllowed;
-		this.triplesAllowed = triplesAllowed;
+		this.setSinglesAllowed(singlesAllowed);
+		this.setDoublesAllowed(doublesAllowed);
+		this.setTriplesAllowed(triplesAllowed);
 		this.homeRunsAllowed = homeRunsAllowed;
 	}
 
-	public Pitcher(String lastname, String firstname, Handed battingHanded, Handed pitchingHanded, 
-			int inningsPitched, int plateAppearances, int walks, int hbp, int singles,
-			int doubles, int triples, int homeRuns, float whip) {
+	public Pitcher(String lastname, String firstname, Handed battingHanded, Handed pitchingHanded, int inningsPitched,
+			int plateAppearances, int walks, int hbp, int singles, int doubles, int triples, int homeRuns, float whip) {
 		super(lastname, firstname, battingHanded, plateAppearances, walks, hbp, singles, doubles, triples, homeRuns);
 		this.handed = pitchingHanded;
 		this.whip = whip;
 	}
-	
+
 	public Handed getHanded() {
 		return handed;
 	}
-	
+
 	public void setHanded(Handed handed) {
 		this.handed = handed;
 	}
@@ -73,7 +72,7 @@ public class Pitcher extends Batter {
 	public void setWhip(float whip) {
 		this.whip = whip;
 	}
-	
+
 	public int getInningsPitched() {
 		return inningsPitched;
 	}
@@ -81,33 +80,63 @@ public class Pitcher extends Batter {
 	public int getWalksAllowed() {
 		return walksAllowed;
 	}
-	
+
 	public int getHbpAllowed() {
-//		return hbpAllowed;
+		// return hbpAllowed;
 		return 2;
 	}
-	
+
+	/**
+	 * Returns the singles allowed.
+	 * <p>
+	 * For this iteration, the singles are an estimate. We need a better import file
+	 * that explicitly indicates the number of singles allowed.
+	 * 
+	 * @return Singles allowed.
+	 */
 	public int getSinglesAllowed() {
-//		return singlesAllowed;
-		int totalWH = (int) (whip * inningsPitched);
-		int totalSDT = totalWH - walksAllowed - homeRunsAllowed;
-		return (int) (totalSDT * .75);		
+		if (singlesAllowed == 0) {
+			int totalWH = (int) (whip * inningsPitched);
+			int totalSDT = totalWH - walksAllowed - homeRunsAllowed;
+			singlesAllowed = (int) (totalSDT * .75);
+		}
+		return singlesAllowed;
 	}
-	
+
+	/**
+	 * Returns the doubles allowed.
+	 * <p>
+	 * For this iteration, the doubles are an estimate. We need a better import file
+	 * that explicitly indicates the number of doubles allowed.
+	 * 
+	 * @return Doubles allowed.
+	 */
 	public int getDoublesAllowed() {
-//		return doublesAllowed;
-		int totalWH = (int) (whip * inningsPitched);
-		int totalSDT = totalWH - walksAllowed - homeRunsAllowed;
-		return (int) (totalSDT * .2);
+		if (doublesAllowed == 0) {
+			int totalWH = (int) (whip * inningsPitched);
+			int totalSDT = totalWH - walksAllowed - homeRunsAllowed;
+			doublesAllowed = (int) (totalSDT * .2);
+		}
+		return doublesAllowed;
 	}
-	
+
+	/**
+	 * Returns the triples allowed.
+	 * <p>
+	 * For this iteration, the triples are an estimate. We need a better import file
+	 * that explicitly indicates the number of triples allowed.
+	 * 
+	 * @return Triples allowed.
+	 */
 	public int getTriplesAllowed() {
-//		return triplesAllowed;
-		int totalWH = (int) (whip * inningsPitched);
-		int totalSDT = totalWH - walksAllowed - homeRunsAllowed;
-		return (int) (totalSDT * .05);
+		if (triplesAllowed == 0) {
+			int totalWH = (int) (whip * inningsPitched);
+			int totalSDT = totalWH - walksAllowed - homeRunsAllowed;
+			triplesAllowed = (int) (totalSDT * .05);
+		}
+		return triplesAllowed;
 	}
-	
+
 	public int getHomeRunsAllowed() {
 		return homeRunsAllowed;
 	}
@@ -119,7 +148,7 @@ public class Pitcher extends Batter {
 	public float getOpponentOnBasePercentage() {
 		return ((getWhip() * 9) / (getWhip() * 9 + 27F));
 	}
-	
+
 	public int getNumOutcomes(Outcome outcome) {
 		int rtnCount = 0;
 
@@ -138,5 +167,37 @@ public class Pitcher extends Batter {
 		}
 
 		return rtnCount;
+	}
+
+	public int getDoublesAllow() {
+		return doublesAllowed;
+	}
+
+	public void setDoublesAllowed(int doublesAllowed) {
+		this.doublesAllowed = doublesAllowed;
+	}
+
+	public float getAwayWhip() {
+		return awayWhip;
+	}
+
+	public void setAwayWhip(float awayWhip) {
+		this.awayWhip = awayWhip;
+	}
+
+	public float getHomeWhip() {
+		return homeWhip;
+	}
+
+	public void setHomeWhip(float homeWhip) {
+		this.homeWhip = homeWhip;
+	}
+
+	public void setSinglesAllowed(int singlesAllowed) {
+		this.singlesAllowed = singlesAllowed;
+	}
+
+	public void setTriplesAllowed(int triplesAllowed) {
+		this.triplesAllowed = triplesAllowed;
 	}
 }

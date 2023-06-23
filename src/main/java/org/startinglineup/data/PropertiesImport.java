@@ -12,6 +12,7 @@ public class PropertiesImport extends FileImport {
 	
 	public void process(String[] data) throws FileImportException {
 		try {
+                    Properties.getInstance().setPathname(file.getAbsolutePath());
 		    String key = null;
 		    String value = null;
 		    
@@ -19,7 +20,9 @@ public class PropertiesImport extends FileImport {
 			if (data.length > 1) {
 				value = data[1].trim();
 			}
-			Properties.getInstance().add(key, value);
+                        if (!key.startsWith("#") && (!key.trim().equals(""))) {
+			    Properties.getInstance().add(key, value);
+                        }
 		} catch (Exception e) {
 			throw new FileImportException("Exception processing file: " + file.getAbsolutePath(), e);
 		}

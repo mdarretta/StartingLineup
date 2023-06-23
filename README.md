@@ -6,6 +6,6 @@ The purpose for this simulator is to determine the strength of a team's starting
 To build and run your instance of StartingLineup, do the following:
 
 1. Download the repository
-2. If necessary, change the access for build.sh and run.sh to 755
+2. If needed, change the access for build.sh and run.sh to 755
 3. Execute ./build.sh
 4. Execute ./run.sh

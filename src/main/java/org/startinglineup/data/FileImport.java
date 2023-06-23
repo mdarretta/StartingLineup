@@ -32,13 +32,11 @@ public abstract class FileImport {
 		String line = "";
 
 		try {
-			
 			br = new BufferedReader(new FileReader(file));
 			while ((line = br.readLine()) != null) {
 				String[] data = line.split(pattern,-1);
 				process(data);
 			}
-
 		} catch (FileNotFoundException e) {
 			throw new FileImportException("Cannot find file: " + file.getAbsolutePath(), e);
 		} catch (IOException e) {

@@ -15,10 +15,10 @@ public abstract class StartingPlayerMap {
 	protected HashMap<String, Collection<Player>> map;
 
 	protected StartingPlayerMap() {
-			super();
-			map = new HashMap<String,Collection<Player>>();
-			populateKeys();
-		}
+		super();
+		map = new HashMap<String, Collection<Player>>();
+		populateKeys();
+	}
 
 	private void populateKeys() {
 		// Ensure all teams are included in all maps due to interleague play
@@ -37,6 +37,22 @@ public abstract class StartingPlayerMap {
 		return map.get(team.getAbbr());
 	}
 	
+	public Set<String> getTeamAbbrs() {
+		return map.keySet();
+	}
+	
+	public int getNumPlayers() {
+		Set<String> keys = getTeamAbbrs();
+		Iterator<String> i = keys.iterator();
+		int rtnInt = 0;
+		while (i.hasNext()) {
+			String key = i.next();
+			rtnInt += map.get(key).size();
+		}
+		
+		return rtnInt;
+	}
+
 	public String toString() {
 		String rtnString = "";
 		Set<String> keys = map.keySet();
@@ -50,7 +66,7 @@ public abstract class StartingPlayerMap {
 				rtnString += i2.next() + "\n";
 			}
 		}
-		
+
 		return rtnString;
 	}
 }
