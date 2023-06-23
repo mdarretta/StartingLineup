@@ -18,7 +18,11 @@ public class Schedule {
 	public static Schedule getInstance() {
 		return instance;
 	}
-	
+
+        public void clear() {
+                games.clear(); 
+        }
+
 	public void addGame(Game game) {
 		this.games.add(game);
 	}

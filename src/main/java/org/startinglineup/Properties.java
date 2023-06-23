@@ -1,11 +1,13 @@
 package org.startinglineup;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Properties {
 	
 	private HashMap<String, String> map;
 	private static Properties instance = new Properties();
+        private String pathname;
 
 	public static final String BATTER_IMPORT_FILE_PROP = "batterImportFile";
 	public static final String BATTER_IMPORT_TEMPLATE_PROP = "batterImportTemplate";
@@ -17,6 +19,8 @@ public class Properties {
 	public static final String ROTATION_IMPORT_TEMPLATE_PROP = "rotationImportTemplate";
 	public static final String SCHEDULE_IMPORT_FILE_PROP = "scheduleImportFile";
 	public static final String SCHEDULE_IMPORT_TEMPLATE_PROP = "scheduleImportTemplate";
+	public static final String PITCHING_WAR_IMPORT_FILE_PROP = "pitchingWARImport";
+	public static final String PITCHING_WAR_IMPORT_TEMPLATE_PROP = "pitchingWARTemplate";
 	public static final String NUMBER_OF_SEASONS_TO_MODEL_PROP = "numberOfSeasonsToModel";
 	public static final String STARTING_DATE_TO_MODEL_PROP = "startingDateToModel";
 	public static final String ENDING_DATE_TO_MODEL_PROP = "endingDateToModel";
@@ -39,4 +43,28 @@ public class Properties {
 	public String get(String key) {
 		return map.get(key);
 	}
+
+        public HashMap<String, String> getProperties() {
+            return map;
+        }
+
+        public void setPathname(String pathname) {
+            this.pathname = pathname;
+        }
+
+        public String getPathname() {
+            return pathname;
+        }
+
+        public String toString() {
+            String rtnStr = "";
+            Iterator<String> keys = map.keySet().iterator();
+            String key = null;
+            while (keys.hasNext()) {
+                key = keys.next();
+                rtnStr += (key + ":" + get(key) + "\n");
+            }
+ 
+            return rtnStr;
+        } 
 }

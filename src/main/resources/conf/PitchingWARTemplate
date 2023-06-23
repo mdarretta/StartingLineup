@@ -1,0 +1,13 @@
+[TARGET]org.startinglineup.component.Pitcher
+Rank,,java.lang.Integer
+Pleyer,lastname,java.lang.String
+[TARGET]org.startinglineup.component.MetricHelper
+MetricHandler$,metric:advancedMetric,org.startinglineup.component.WARMetric
+[DONE]
+RAR,,java.lang.Float
+WAA,,java.lang.Float
+WAAWP,,java.lang.Float
+ORPG,,java.lang.Float
+BIP,,java.lang.Float
+PPF,,java.lang.Float,
+[DONE]

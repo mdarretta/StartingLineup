@@ -44,7 +44,7 @@ class PlayerMap {
 	
 	private String getKey(String lastname, String firstname) {
 		// Create a temporary player object, then return the formatted name
-		Player player = new Player(lastname, firstname, Handed.RIGHT);
+		Player player = new Player(lastname, firstname, Handed.RIGHT, null);
 		return player.getFormattedName();
 	}
 

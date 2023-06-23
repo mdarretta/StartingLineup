@@ -1,0 +1,25 @@
+[TARGET]org.startinglineup.component.Batter
+Last Name,lastname,java.lang.String
+First Name,firstname,java.lang.String
+Team,,java.lang.String
+Position,,java.lang.Integer
+Games,,java.lang.Integer
+Plate Appearances,plateAppearances,java.lang.Integer
+Runs,,java.lang.Integer
+Hits,hits,java.lang.Integer
+Doubles,doubles,java.lang.Integer
+Triples,triples,java.lang.Integer
+Home Runs,homeRuns,java.lang.Integer
+RBIs,rbis,java.lang.Integer
+Stolen Bases,,java.lang.Integer
+Caught Stealing,,java.lang.Integer
+Walks,walks,java.lang.Integer
+Strikeouts,,java.lang.Integer
+Attr1,,java.lang.Integer
+Attr2,,java.lang.Integer
+Attr3,,java.lang.Integer
+Batting Average,,java.lang.Float
+On Base Percentage,,java.lang.Float
+Slugging Percentage,,java.lang.Float
+OPS,,java.lang.Float
+[DONE]

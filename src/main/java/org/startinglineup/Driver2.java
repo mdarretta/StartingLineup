@@ -15,7 +15,7 @@ import org.startinglineup.simulator.Standings;
 
 import java.io.File;
 
-public class Driver {
+public class Driver2 {
 	
     public static void main(String[] args) {
     	
@@ -87,6 +87,7 @@ public class Driver {
     }
     
     private static void run() {
+
         Collection<GameStats> gameStats = Schedule.getInstance().play();
         Standings.getInstance().addStats(gameStats);
     }

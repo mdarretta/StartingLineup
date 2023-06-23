@@ -19,6 +19,8 @@ import org.startinglineup.event.AtBatResultGenerator;
 import org.startinglineup.league.League;
 import org.startinglineup.league.MajorLeagues;
 
+import org.startinglineup.component.*;
+
 public class Game extends UniqueComponent {
 
     private HomeTeam home;
@@ -113,7 +115,8 @@ public class Game extends UniqueComponent {
 
     private Outcome getNextOutcome(Batter batter, Pitcher pitcher) 
     		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-    	
+    
+        System.out.println("IN GAME.java - PITCHER WAR IS: " + pitcher.getAdvancedMetrics().getMetric(AdvancedMetric.WAR));	
     	String className = Properties.getInstance().get(Properties.AT_BAT_RESULT_GENERATOR_CLASS_PROP);
     	AtBatResultGenerator atBatResultGenerator = 
     			(AtBatResultGenerator) Class.forName(className).newInstance();

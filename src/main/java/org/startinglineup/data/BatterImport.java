@@ -62,7 +62,8 @@ public class BatterImport extends TemplattedFileImport {
 			// Reinstantiate the batter object to set the normalize field
 			batter = new Batter(batter.getLastname(), batter.getFirstname(), batter.getHanded(), batter.getAtBats(), 
 					batter.getWalks(), batter.getHbp(), batter.getSingles(), batter.getDoubles(), batter.getTriples(), 
-					batter.getHomeRuns(), normalize);
+					batter.getHomeRuns());
+                        batter.setNormalize(normalize);
 			
 			BatterMap.getInstance().add(batter);
 		} catch (IllegalAccessException iae) {

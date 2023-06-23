@@ -7,6 +7,9 @@ public class Player extends UniqueComponent {
 	
 	/** Either the batting or pitching handedness of the player */
 	protected Handed handed;
+
+        /** Map of advanced metrics, such as WAR or BABIP */
+        protected AdvancedMetrics advancedMetrics;
 	
 	public enum Handed { 
 		LEFT("Left","L"), RIGHT("Right","R"), SWITCH("Switch","S");
@@ -45,20 +48,21 @@ public class Player extends UniqueComponent {
 		super();
 	}
 
-	public Player(String lastname, String firstname, Handed handed) {
+	public Player(String lastname, String firstname, Handed handed, AdvancedMetrics advancedMetrics) {
 		this();
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.handed = handed;
+                this.advancedMetrics = advancedMetrics;
 	}
 
 	public Handed getHanded() {
 		return handed;
 	}
 	
-	public void setHanded(Handed handed) {
+	/*public void setHanded(Handed handed) {
 		this.handed = handed;
-	}
+	}*/
 
 	public String getLastname() {
 		return lastname;
@@ -71,6 +75,10 @@ public class Player extends UniqueComponent {
 	public String getFormattedName() {
 		return lastname + ", " + firstname;
 	}
+
+        public AdvancedMetrics getAdvancedMetrics() {
+            return advancedMetrics;
+        }
 
 	public String toString() {
 		return getFormattedName();
