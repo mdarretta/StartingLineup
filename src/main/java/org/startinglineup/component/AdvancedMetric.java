@@ -10,7 +10,6 @@ package org.startinglineup.component;
  */
 public class AdvancedMetric {
 
-//    public static final String WAR = "WAR";
 	public enum MetricType {
 		WAR("WAR"), WAA("WAA");
 		

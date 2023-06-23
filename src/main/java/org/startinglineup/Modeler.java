@@ -66,6 +66,7 @@ public class Modeler {
                 offensiveWARImport.run();
             }
 
+            // Optional imports
             scheduleImport = new ScheduleImport(new File(
             		Properties.getInstance().get(Properties.SCHEDULE_IMPORT_FILE_PROP)));
             scheduleImport.run();

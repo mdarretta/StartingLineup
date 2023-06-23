@@ -36,6 +36,16 @@ public abstract class StartingPlayerMap {
 	public Collection<Player> get(Team team) {
 		return map.get(team.getAbbr());
 	}
+
+        public void replace(Team team, Player player) {
+                Collection<Player> players = get(team);
+                for (Player p : players) {
+                    if (p.toString().equals(player.toString())) {
+                        p = player;
+                        break;
+                    }
+                }
+        }
 	
 	public Set<String> getTeamAbbrs() {
 		return map.keySet();

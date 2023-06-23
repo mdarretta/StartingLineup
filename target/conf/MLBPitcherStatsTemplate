@@ -1,0 +1,22 @@
+[TARGET]org.startinglineup.component.Pitcher
+Pleyer,lastname,java.lang.String
+Team,,java.lang.String
+Age,,java.lang.Integer
+Games,,java.lang.Integer
+Games Started,,java.lang.Integer
+Complate Games,,java.lang.Integer
+Shutouts,,java.lang.Integer
+Innings Pitched,inningsPitched,java.lang.Integer
+Hits,,java.lang.Integer
+Earned Runs,,java.lang.Integer
+Strikeouts,,java.lang.Integer
+Walks,walks,java.lang.Integer
+Home Runs,homeRuns,java.lang.Integer
+Wins,,java.lang.Integer
+Losses,,java.lang.Integer
+Saves,,java.lang.Integer
+Blown Saves,,java.lang.Integer
+Holds,,java.lang.Integer
+ERA,,java.lang.Float
+WHIP,whip,java.lang.Float
+[DONE]

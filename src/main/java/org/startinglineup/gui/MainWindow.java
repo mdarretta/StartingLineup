@@ -64,6 +64,7 @@ public class MainWindow {
         // the edge of the container and the container.
         layout.setAutoCreateContainerGaps(true);
 
+        JLabel resultsLbl = new JLabel("Results:");
         numSeasonsTF = new TextField("Number of seasons to model: ", ""+modeler.getNumSeasons());
         startDateTF = new TextField("Starting date: ", modeler.getStartDate());
         endDateTF = new TextField("Ending date: ", modeler.getEndDate());
@@ -116,6 +117,7 @@ public class MainWindow {
 
         return layout;
     }
+
 
     private JButton createClearBtn() {
         JButton button = new JButton("Clear Results");

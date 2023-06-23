@@ -69,9 +69,9 @@ public class Player extends UniqueComponent {
 		return handed;
 	}
 
-	public void setHanded(Handed handed) {
+	/*public void setHanded(Handed handed) {
 		this.handed = handed;
-	}
+	}*/
 
 	public String getLastname() {
 		return lastname;
