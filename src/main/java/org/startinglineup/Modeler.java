@@ -195,16 +195,11 @@ public class Modeler {
         results += BatterStatsMap.getInstance().forString(
                         BatterStatsMap.getInstance().getStatsByOPS(), 10);
         results += Standings.getInstance();
-        results += new StandingsByAdvancedMetrics(AdvancedMetric.MetricType.WAR).toString();
         
-        /*
-         * Test code
-         */
-        results += "Number of current players: " + 
-                (org.startinglineup.data.ALStartingLineupMap.getInstance().getNumPlayers() +
-                org.startinglineup.data.NLStartingLineupMap.getInstance().getNumPlayers()) + "\n";
-        results += "Number of current pitchers: " + 
-                org.startinglineup.data.StartingRotationMap.getInstance().getNumPlayers();
         return results;
+    }
+    
+    public String getAdvancedMetricResults(AdvancedMetric.MetricType type) {
+        return new StandingsByAdvancedMetrics(type).toString();
     }
 }

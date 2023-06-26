@@ -25,6 +25,7 @@ public abstract class TemplattedFileImport extends CSVImport {
             Template template = reader.getTemplate();
  
     		UniqueComponent target = null;
+    		
          	
     		if (template.hasHeader() && isFirstLine) {
 			    reader.processHeader(data);
@@ -33,11 +34,15 @@ public abstract class TemplattedFileImport extends CSVImport {
 
             for (int x=0; x<template.getItems().length; x++) {
             	Template.TemplateItem item = template.getItem(x);
-       		 
+            	
             	if (item == null) {
             		continue;
             	}
         		
+            	if (!item.isDone()) {
+            		reader.setCurrentItem(item);
+            	}
+       		 
             	if (item.isRecursive()) {
             		recursiveItem = item;
             		recursiveData = data[dataIdx++];

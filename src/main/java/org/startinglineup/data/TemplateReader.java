@@ -20,6 +20,7 @@ public class TemplateReader extends CSVImport {
 	private Template template = null;
 	private int index = 0;
 	private UniqueComponent target = null;
+	private Template.TemplateItem currItem = null;
 	private HashMap<Template.TemplateItem, String> headerItems;
 		
 	public TemplateReader(File file) {
@@ -43,6 +44,7 @@ public class TemplateReader extends CSVImport {
     	UniqueComponent rtnObj = null;
 
     	if (item != null) {
+    		
 	    	String fieldName = item.getFieldName();
 	    	boolean isRecursive = item.isRecursive();
 	    	boolean isDerived = item.isDerived();
@@ -74,6 +76,7 @@ public class TemplateReader extends CSVImport {
 	    		}
 	    	}
     	}
+    	
     	return rtnObj;
 	}
 	
@@ -124,6 +127,14 @@ public class TemplateReader extends CSVImport {
 	
 	public UniqueComponent getCurrentTarget() {
 		return this.target;
+	}
+	
+	public void setCurrentItem(Template.TemplateItem currItem) {
+		this.currItem = currItem;
+	}
+	
+	public Template.TemplateItem getCurrentItem() {
+		return currItem;
 	}
 	
 	public void resetCurrentTarget() {

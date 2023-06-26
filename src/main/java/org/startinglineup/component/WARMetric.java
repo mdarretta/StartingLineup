@@ -3,14 +3,10 @@ package org.startinglineup.component;
 public class WARMetric extends AdvancedMetric {
 
     public WARMetric() {
-        super();
-    }
-
-    public WARMetric(float war) {
-        super.advancedMetric = war;
+        super(MetricType.WAR);
     }
 
     public float getWar() {
-        return super.advancedMetric;
+        return advancedMetric;
     }
 }

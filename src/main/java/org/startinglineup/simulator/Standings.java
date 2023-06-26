@@ -162,19 +162,6 @@ public class Standings {
 			rtnStr += stats + "\n";
 		}
 		
-		// Test code
-		
-		/*
-		 * float metrics = 0.0F; java.util.Iterator<org.startinglineup.component.Team>
-		 * i2 = teams.iterator(); while (i2.hasNext()) {
-		 * org.startinglineup.component.Team team = i2.next();
-		 * java.util.List<org.startinglineup.component.Batter> batters =
-		 * team.getBatters(); Iterator<org.startinglineup.component.Batter> i3 =
-		 * batters.iterator(); while (i3.hasNext()) { metrics +=
-		 * i3.next().getAdvancedMetrics().getMetric(org.startinglineup.component.
-		 * AdvancedMetric.WAR) .getAdvancedMetric(); } } System.out.println("TOTAL WAR="
-		 * + metrics);
-		 */		 		
 		return rtnStr;
 	}
 	

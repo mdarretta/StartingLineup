@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -12,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+import org.startinglineup.component.AdvancedMetric;
 
 import org.startinglineup.Modeler;
 
@@ -29,6 +32,9 @@ public class MainWindow {
     private JButton clearBtn;
     private JButton startBtn;
     private JButton saveBtn;
+    private JCheckBox WARcb;
+    private JCheckBox WAAcb;
+    
     private Modeler modeler;
 
     public MainWindow() {
@@ -64,7 +70,6 @@ public class MainWindow {
         // the edge of the container and the container.
         layout.setAutoCreateContainerGaps(true);
 
-        JLabel resultsLbl = new JLabel("Results:");
         numSeasonsTF = new TextField("Number of seasons to model: ", ""+modeler.getNumSeasons());
         startDateTF = new TextField("Starting date: ", modeler.getStartDate());
         endDateTF = new TextField("Ending date: ", modeler.getEndDate());
@@ -76,22 +81,22 @@ public class MainWindow {
         resultsTA = new JTextArea();
         resultsTA.setEditable(false);
         resultsSP = new JScrollPane(resultsTA);
+        WARcb = new JCheckBox("Include WAR");
+        WAAcb = new JCheckBox("Include WAA");
 
         // Create a sequential group for the horizontal axis.
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
 
         hGroup.addGroup(layout.createParallelGroup().
-            addComponent(numSeasonsTF.getLabel()).addComponent(startDateTF.getLabel()).
-                addComponent(endDateTF.getLabel()).addComponent(startGameTF.getLabel()).
-                    addComponent(endGameTF.getLabel()).
-                        addComponent(saveBtn).addComponent(startBtn));
+        		addComponent(numSeasonsTF.getLabel()).addComponent(startDateTF.getLabel()).
+        		addComponent(endDateTF.getLabel()).addComponent(startGameTF.getLabel()).
+        		addComponent(endGameTF.getLabel()).
+        		addComponent(WARcb).addComponent(WAAcb).
+        		addComponent(saveBtn).addComponent(startBtn));
         hGroup.addGroup(layout.createParallelGroup().
             addComponent(numSeasonsTF.getField()).addComponent(startDateTF.getField()).
                 addComponent(endDateTF.getField()).addComponent(startGameTF.getField()).
                     addComponent(endGameTF.getField()).addComponent(clearBtn).addComponent(resultsSP));
-        //hGroup.addGroup(layout.createParallelGroup().addComponent(saveBtn).addComponent(new JLabel("Results")));
-        //hGroup.addGroup(layout.createParallelGroup().addComponent(startBtn));
-        //hGroup.addGroup(layout.createParallelGroup().addComponent(resultsSP));
         layout.setHorizontalGroup(hGroup);
 
         // Create a sequential group for the vertical axis.
@@ -108,11 +113,13 @@ public class MainWindow {
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).
             addComponent(endGameTF.getLabel()).addComponent(endGameTF.getField()));
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).
-            addComponent(saveBtn).addComponent(clearBtn));
+                addComponent(WARcb));
         vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).
-            addComponent(startBtn).addComponent(resultsSP));
-        /*vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).
-            addComponent(resultsSP));*/
+                addComponent(WAAcb));
+        vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).
+                addComponent(saveBtn).addComponent(clearBtn));
+        vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).
+                addComponent(startBtn).addComponent(resultsSP));
         layout.setVerticalGroup(vGroup);
 
         return layout;
@@ -132,10 +139,11 @@ public class MainWindow {
     }
 
     private JButton createStartBtn() {
+    	modeler = new Modeler();
+    	
         JButton button = new JButton("Start");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                modeler = new Modeler();
                 modeler.update(
                     numSeasonsTF.getValue(),
                     startDateTF.getValue(),
@@ -149,6 +157,13 @@ public class MainWindow {
                 }
                 
                 resultsTA.append(modeler.getResults() + "\n");
+
+                if (WARcb.isSelected()) {
+                	resultsTA.append(modeler.getAdvancedMetricResults(AdvancedMetric.MetricType.WAR));
+                }
+                if (WAAcb.isSelected()) {
+                	resultsTA.append(modeler.getAdvancedMetricResults(AdvancedMetric.MetricType.WAA));
+                }
                 
             }
         });
@@ -157,7 +172,7 @@ public class MainWindow {
     } 
 
     private JButton createSaveBtn() {
-        JButton button = new JButton("Save");
+        JButton button = new JButton("Save Properties");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 modeler.export(
@@ -179,25 +194,25 @@ public class MainWindow {
         protected JLabel label;
 
         @SuppressWarnings("unused")
-		protected TextField(String label) {
-            this(label,"");
-        }
+ 		protected TextField(String label) {
+             this(label,"");
+         }
 
-        protected TextField(String label, String value) {
-            this.label = new JLabel(label, SwingConstants.RIGHT);
-            this.textField = new JTextField(value, 40);
-        }
+         protected TextField(String label, String value) {
+             this.label = new JLabel(label, SwingConstants.RIGHT);
+             this.textField = new JTextField(value, 40);
+         }
 
-        protected JLabel getLabel() {
-            return label;
-        }
- 
-        protected JTextField getField() {
-            return textField;
-        }
+         protected JLabel getLabel() {
+             return label;
+         }
+  
+         protected JTextField getField() {
+             return textField;
+         }
 
-        protected String getValue() {
-            return textField.getText();
-        }
+         protected String getValue() {
+             return textField.getText();
+         }
     }
 }

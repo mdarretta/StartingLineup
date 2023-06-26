@@ -20,8 +20,6 @@ import org.startinglineup.event.AtBatResultGenerator;
 import org.startinglineup.league.League;
 import org.startinglineup.league.MajorLeagues;
 
-import org.startinglineup.component.*;
-
 public class Game extends UniqueComponent {
 
     private HomeTeam home;
@@ -103,8 +101,14 @@ public class Game extends UniqueComponent {
     	ArrayList<Batter> visitorLineup = new ArrayList<Batter>();
     	visitorLineup.addAll(map.getLineup(visitor.getTeam()));
     	
-    	home.getTeam().addBatters(homeLineup);
-        visitor.getTeam().addBatters(visitorLineup);    
+    	// CHeck whether this is the first time the lineups will be added
+    	if (home.getTeam().getBatters().size() == 0) {
+    		home.getTeam().addBatters(homeLineup);
+    	}
+    	
+    	if (visitor.getTeam().getBatters().size() == 0) {
+    		visitor.getTeam().addBatters(visitorLineup);    
+    	}
         
         home.getTeam().setPitcher(StartingRotationMap.getInstance().getNext(home.getTeam()));
         visitor.getTeam().setPitcher(StartingRotationMap.getInstance().getNext(visitor.getTeam()));

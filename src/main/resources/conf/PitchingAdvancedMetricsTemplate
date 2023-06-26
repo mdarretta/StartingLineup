@@ -13,10 +13,10 @@ Rank,,java.lang.Integer
 [TARGET]org.startinglineup.component.Pitcher
 First,firstname,java.lang.String
 Last,lastname,java.lang.String
-WAR,metric,java.lang.Float
-[DONE]
+WAR,war,java.lang.Float
 RAR,,java.lang.Float
-WAA,,java.lang.Float
+WAA,waa,java.lang.Float
+[DONE]
 WAAWP,,java.lang.Float
 ORPG,,java.lang.Float
 BIP,,java.lang.Float

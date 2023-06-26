@@ -9,9 +9,14 @@ public class Player extends UniqueComponent {
 	protected Handed handed;
 	
 	/** 
-	 * Helper field for adding metrics during templatted import.
+	 * Helper field for adding WAR metrics during templatted import.
 	 */
-	protected float metric;
+	protected float war;
+
+	/** 
+	 * Helper field for adding WAA metrics during templatted import.
+	 */
+	protected float waa;
 
 	/** Map of advanced metrics, such as WAR or BABIP */
 	protected AdvancedMetrics advancedMetrics;
@@ -93,12 +98,20 @@ public class Player extends UniqueComponent {
 		this.advancedMetrics = advancedMetrics;
 	}
 	
-	public void setMetric(float metric) {
-		this.metric = metric;
+	public void setWar(float war) {
+		this.war = war;
 	}
 	
-	public float getMetric() {
-		return metric;
+	public float getWar() {
+		return war;
+	}
+	
+	public void setWaa(float waa) {
+		this.waa = waa;
+	}
+	
+	public float getWaa() {
+		return waa;
 	}
 	
 	public boolean equals(Player player) {

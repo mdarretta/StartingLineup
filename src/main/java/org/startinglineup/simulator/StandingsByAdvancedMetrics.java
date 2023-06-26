@@ -100,7 +100,6 @@ public class StandingsByAdvancedMetrics {
 		while (i.hasNext()) {
 			player = i.next();
 			if (player.getAdvancedMetrics() != null) {
-				System.out.println(player.getLastname());
 				AdvancedMetric metric = player.getAdvancedMetrics().getMetric(this.metric);
 				if (metric != null) {
 					total += metric.getAdvancedMetric();
@@ -165,7 +164,7 @@ public class StandingsByAdvancedMetrics {
 		Collection<org.startinglineup.component.Team> alCentralTeams = MajorLeagues.getInstance().getALCentralTeams();
 		Collection<org.startinglineup.component.Team> alEastTeams = MajorLeagues.getInstance().getALEastTeams();
 
-		return "Standings based on " + metric + ":\n" +
+		return "--------------------------\n" + "Standings based on " + metric + "\n\n" + 
 		    getStatsStrForLeague(League.LeagueType.AMERICAN, alEastTeams, alCentralTeams, alWestTeams)
 				+ getStatsStrForLeague(League.LeagueType.NATIONAL, nlEastTeams, nlCentralTeams, nlWestTeams);
 
