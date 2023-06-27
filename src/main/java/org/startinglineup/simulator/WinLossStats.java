@@ -76,7 +76,10 @@ public class WinLossStats implements Comparable<WinLossStats> {
 		int startGame = Integer.valueOf(Properties.getInstance().get(Properties.STARTING_GAME_TO_MODEL_PROP));
 		int endGame = Integer.valueOf(Properties.getInstance().get(Properties.ENDING_GAME_TO_MODEL_PROP));
 		int totalGamesPerSeason = endGame - startGame + 1;
-		int homeGamesPerSeason = Math.round((int) totalGamesPerSeason/divisor);
+		
+		// This is an estimate. There needs to be more intelligent calculations
+		// based upon the actual sub-schedule chosen
+		int homeGamesPerSeason = Math.round((int) totalGamesPerSeason/2);
 		
 		// To reduce error on rounding, only calculate the wins and homeWins attributes using the divisor,
 		// then derive the losses from those rounded values.
@@ -151,11 +154,11 @@ public class WinLossStats implements Comparable<WinLossStats> {
 	}
 	
 	public String toString() {
-		return Formatter.getPaddedInt(getWins(), 4, true) +
-				Formatter.getPaddedInt(getLosses(), 4, true) +
-				Formatter.getPaddedInt(getHomeWins(), 4, true) +
-				Formatter.getPaddedInt(getHomeLosses(),  4, true) +
-				Formatter.getPaddedInt(getVisitorWins(),  4, true) +
-				Formatter.getPaddedInt(getVisitorLosses(),  4, true);
+		return Formatter.format(getWins(), 0, 0, true) +
+				Formatter.format(getLosses(), 0, 1, true) +
+				Formatter.format(getHomeWins(), 0, 1, true) +
+				Formatter.format(getHomeLosses(), 0, 1, true) +
+				Formatter.format(getVisitorWins(), 0, 1, true) +
+				Formatter.format(getVisitorLosses(), 0, 1, true);
 	}
 }

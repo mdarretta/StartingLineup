@@ -158,7 +158,7 @@ public class Standings {
 		Iterator<WinLossStats> i = sortedList.iterator();
 		while (i.hasNext()) {
 			stats = i.next();
-			rtnStr += Formatter.getPaddedString(stats.getTeam().getAbbr(),4,true);
+			rtnStr += Formatter.format(stats.getTeam().getAbbr(), 1, false);
 			rtnStr += stats + "\n";
 		}
 		
@@ -171,14 +171,14 @@ public class Standings {
 			Collection<org.startinglineup.component.Team> centralTeams,
 			Collection<org.startinglineup.component.Team> westTeams) {
 		
-		String rtnString = league.getName() + "\n";
+		String rtnString = "\n" + league.getName() + "\n";
 		rtnString += "--------------------------\n\n";
 		rtnString += getStatsStrForDivision(Division.DivisionType.EAST, eastTeams);
 		rtnString += ("\n");
 		rtnString += getStatsStrForDivision(Division.DivisionType.CENTRAL, centralTeams);
 		rtnString += ("\n");
 		rtnString += getStatsStrForDivision(Division.DivisionType.WEST, westTeams);
-		
+				
 		return rtnString;
 	}
 	
@@ -186,12 +186,14 @@ public class Standings {
 			Division.DivisionType division, Collection<org.startinglineup.component.Team> teams) {
 		
 		String rtnString = (division.getName() + "\n");
-		rtnString += Formatter.getPaddedString("W",8,true) + 
-				     Formatter.getPaddedString("L",4,true) +
-				     Formatter.getPaddedString("Home",8,true) + 
-				     Formatter.getPaddedString("Away",8,true) + "\n";
+
+		rtnString += Formatter.format("W",1,true) + 
+	     Formatter.format("L",1,true) +
+	     Formatter.format("W/L (Home)",1,true) + 
+	     Formatter.format("W/L (Away)",1,true) + "\n";
+
 		rtnString += (getStatsStrForTeams(teams) + "\n");		
-		
+
 		return rtnString;
 	}
 	

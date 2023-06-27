@@ -59,8 +59,8 @@ public class BatterMap extends PlayerMap {
 			batter.setTriples(batter.getTriples() / dividend);
 			batter.setHomeRuns(batter.getHomeRuns() / dividend);
 
-			// Modify all batter who don't meet the minimum number of
-			// plate appearances to to the normalized stats
+			// Modify all batters who don't meet the minimum number of
+			// plate appearances to the normalized stats
 			Iterator<Player> i = BatterMap.getInstance().playerMap.values().iterator();
 			Batter currentBatter = null;
 			while (i.hasNext()) {

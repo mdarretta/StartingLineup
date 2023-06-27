@@ -7,6 +7,7 @@ import org.startinglineup.component.Outcome;
 import org.startinglineup.component.Single;
 import org.startinglineup.component.Triple;
 import org.startinglineup.component.Walk;
+import org.startinglineup.utils.Formatter;
 
 public class BatterStats {
 	
@@ -44,8 +45,8 @@ public class BatterStats {
 	}
 	
 	public String toString() {
-		return batter + " | " + batter.getPlateAppearances() + " | " +
-	        batter.getFormattedBattingAverage() + " | " + batter.getHomeRuns() + " | " +
-				batter.getRbis() + " | " + batter.getFormattedOPS();
+		return Formatter.format(batter.toString(), 20, 1, false) + " | " + Formatter.format(batter.getPlateAppearances(), 3, 0, false) + " | " +
+	        batter.getFormattedBattingAverage() + " | " + Formatter.format(batter.getHomeRuns(), 2, 0, false) + " | " +
+	            Formatter.format(batter.getRbis(), 3, 0, false) + " | " + batter.getFormattedOPS();
 	}
 }

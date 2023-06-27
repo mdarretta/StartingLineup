@@ -18,6 +18,7 @@ import org.startinglineup.simulator.GameStats;
 import org.startinglineup.simulator.Schedule;
 import org.startinglineup.simulator.Standings;
 import org.startinglineup.simulator.StandingsByAdvancedMetrics;
+import org.startinglineup.utils.Formatter;
 
 import java.io.File;
 
@@ -77,21 +78,28 @@ public class Modeler {
     }
     
     public void run() {
-        try {
-            Collection<GameStats> gameStats = Schedule.getInstance().play();
-            Standings.getInstance().reset();
-            Standings.getInstance().addStats(gameStats);
-    
-            int numSeasonsToModel = getNumSeasons();
-    
-            if (numSeasonsToModel > 1) {
-                Standings.getInstance().normalizeStats(numSeasonsToModel);
-                BatterStatsMap.getInstance().updateStatsForSingleSeason(numSeasonsToModel);
-            }
-            
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }
+    	try {
+    		
+    		int numSeasonsToModel = getNumSeasons();
+    		
+    		Standings.getInstance().reset();
+    		BatterStatsMap.getInstance().clear();
+    		
+    		for (int x=0; x < numSeasonsToModel; x++) {
+    			
+        		Collection<GameStats> gameStats = Schedule.getInstance().play();
+
+    		Standings.getInstance().addStats(gameStats);
+    		}
+    		
+    		if (numSeasonsToModel > 1) {
+    			Standings.getInstance().normalizeStats(numSeasonsToModel);
+    			BatterStatsMap.getInstance().updateStatsForSingleSeason(numSeasonsToModel);
+    		}
+
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
     public void update(String numSeasons, String startDate, String endDate, String startGame, String endGame) {
@@ -166,32 +174,31 @@ public class Modeler {
     }
 
     public String getResults() {
-        int numSeasonsToModel = getNumSeasons();
 
-        if (numSeasonsToModel > 1) {
-            Standings.getInstance().normalizeStats(numSeasonsToModel);
-            BatterStatsMap.getInstance().updateStatsForSingleSeason(numSeasonsToModel);
-        }
-        
         String results = "\n";
 
-        results += "Leaders by BA\n";
+        results += Formatter.format("Leaders by BA", 20, 1, false) + " | ";
+        results += Formatter.format("PA", 3, 0, false) + " | ";
+        results += Formatter.format("Avg", 5, 0, false) + " | ";
+        results += Formatter.format("HR", 2, 0, false) + " | ";
+        results += Formatter.format("RBI", 3, 0, false) + " | ";
+        results += Formatter.format("OPS", 0, 0, false) + "\n";
         results += "-------------\n";
         results += BatterStatsMap.getInstance().forString(
                         BatterStatsMap.getInstance().getStatsByBattingAverage(), 10);
         results += "\n";
         results += "Leaders by Home Runs\n";
-        results += "-------------\n";
+        results += "--------------------\n";
         results += BatterStatsMap.getInstance().forString(
                         BatterStatsMap.getInstance().getStatsByHomeRuns(), 10);
         results += "\n";
         results += "Leaders by RBIs\n";
-        results += "-------------\n";
+        results += "---------------\n";
         results += BatterStatsMap.getInstance().forString(
                         BatterStatsMap.getInstance().getStatsByRbis(), 10);
         results += "\n";
         results += "Leaders by OPS\n";
-        results += "-------------\n";
+        results += "--------------\n";
         results += BatterStatsMap.getInstance().forString(
                         BatterStatsMap.getInstance().getStatsByOPS(), 10);
         results += Standings.getInstance();

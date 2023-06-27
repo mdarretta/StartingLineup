@@ -15,6 +15,7 @@ import org.startinglineup.league.Division;
 import org.startinglineup.league.League;
 import org.startinglineup.league.MajorLeagues;
 import org.startinglineup.utils.Formatter;
+import org.startinglineup.utils.ResultsFormatter;
 
 /**
  * Generates a final standings based upon a static list of advanced metrics.
@@ -56,42 +57,6 @@ public class StandingsByAdvancedMetrics {
 		return metrics;
 	}
 
-	public Collection<AdvancedMetricTeamStats> getStatsForDivision(League.LeagueType league,
-			Division.DivisionType division) {
-
-		Collection<org.startinglineup.component.Team> teams = null;
-
-		if (league.equals(League.LeagueType.AMERICAN)) {
-			if (division.equals(Division.DivisionType.EAST)) {
-				teams = MajorLeagues.getInstance().getALEastTeams();
-			} else if (division.equals(Division.DivisionType.CENTRAL)) {
-				teams = MajorLeagues.getInstance().getALCentralTeams();
-			} else {
-				teams = MajorLeagues.getInstance().getALWestTeams();
-			}
-		} else {
-			if (division.equals(Division.DivisionType.EAST)) {
-				teams = MajorLeagues.getInstance().getNLEastTeams();
-			} else if (division.equals(Division.DivisionType.CENTRAL)) {
-				teams = MajorLeagues.getInstance().getNLCentralTeams();
-			} else {
-				teams = MajorLeagues.getInstance().getNLWestTeams();
-			}
-		}
-
-		return getStatsForTeams(teams);
-	}
-
-	public Collection<AdvancedMetricTeamStats> getStatsForLeague(League.LeagueType league) {
-
-		Collection<AdvancedMetricTeamStats> stats = new ArrayList<AdvancedMetricTeamStats>();
-		stats.addAll(getStatsForDivision(league, Division.DivisionType.EAST));
-		stats.addAll(getStatsForDivision(league, Division.DivisionType.CENTRAL));
-		stats.addAll(getStatsForDivision(league, Division.DivisionType.WEST));
-
-		return stats;
-	}
-
 	private float getTotalMetricForPlayers(Collection<Player> players) {
 		Player player = null;
 		float total = 0.0F;
@@ -108,53 +73,32 @@ public class StandingsByAdvancedMetrics {
 		}
 		return total;
 	}
-
-	private String getStatsStrForTeams(Collection<org.startinglineup.component.Team> teams) {
-
-		String rtnStr = "";
-
+	
+	private ResultsFormatter.StringMap getMapForTeams(
+			    Division.DivisionType division, 
+			    Collection<org.startinglineup.component.Team> teams) {
 		
 		Collection<AdvancedMetricTeamStats> stats = getStatsForTeams(teams);
 		List<AdvancedMetricTeamStats> sortedList = new ArrayList<AdvancedMetricTeamStats>();
 		sortedList.addAll(stats); 
 		Collections.sort(sortedList);
 		
+		ResultsFormatter.StringMap map = new ResultsFormatter().createMap();
 		Iterator<AdvancedMetricTeamStats> i = sortedList.iterator();
+		int idx=0;
+		map.put(idx++, Formatter.format(division.toString(), 1, false));
 		while (i.hasNext()) {
 			AdvancedMetricTeamStats teamStats = i.next();
-			rtnStr += Formatter.getPaddedString(teamStats.getTeam().getAbbr() + " " + (int) teamStats.getMetric(), 4, true);
-			rtnStr += "\n";
+			map.put(idx++, Formatter.format(teamStats.getTeam().getAbbr(), 1, false)
+					+ Formatter.format((int) teamStats.getMetric(), 0, false));
 		}
-
-		return rtnStr;
-	}
-
-	private String getStatsStrForLeague(League.LeagueType league,
-			Collection<org.startinglineup.component.Team> eastTeams,
-			Collection<org.startinglineup.component.Team> centralTeams,
-			Collection<org.startinglineup.component.Team> westTeams) {
-
-		String rtnString = league.getName() + "\n";
-		rtnString += "--------------------------\n\n";
-		rtnString += getStatsStrForDivision(Division.DivisionType.EAST, eastTeams);
-		rtnString += ("\n");
-		rtnString += getStatsStrForDivision(Division.DivisionType.CENTRAL, centralTeams);
-		rtnString += ("\n");
-		rtnString += getStatsStrForDivision(Division.DivisionType.WEST, westTeams);
-
-		return rtnString;
-	}
-
-	private String getStatsStrForDivision(Division.DivisionType division,
-			Collection<org.startinglineup.component.Team> teams) {
-
-		String rtnString = (division.getName() + "\n");
-		rtnString += (getStatsStrForTeams(teams) + "\n");
-
-		return rtnString;
+		
+		return map;
 	}
 
 	public String toString() {
+		
+		String rtnStr = "\nStandings by " + metric.getAbbr() + "\n\n";
 
 		Collection<org.startinglineup.component.Team> nlWestTeams = MajorLeagues.getInstance().getNLWestTeams();
 		Collection<org.startinglineup.component.Team> nlCentralTeams = MajorLeagues.getInstance().getNLCentralTeams();
@@ -164,12 +108,28 @@ public class StandingsByAdvancedMetrics {
 		Collection<org.startinglineup.component.Team> alCentralTeams = MajorLeagues.getInstance().getALCentralTeams();
 		Collection<org.startinglineup.component.Team> alEastTeams = MajorLeagues.getInstance().getALEastTeams();
 
-		return "--------------------------\n" + "Standings based on " + metric + "\n\n" + 
-		    getStatsStrForLeague(League.LeagueType.AMERICAN, alEastTeams, alCentralTeams, alWestTeams)
-				+ getStatsStrForLeague(League.LeagueType.NATIONAL, nlEastTeams, nlCentralTeams, nlWestTeams);
-
+		rtnStr += League.LeagueType.AMERICAN;
+		rtnStr += "\n--------------\n";
+		ResultsFormatter formatter = new ResultsFormatter();
+		formatter.addResults(getMapForTeams(Division.DivisionType.EAST, alEastTeams));
+		formatter.addResults(getMapForTeams(Division.DivisionType.CENTRAL, alCentralTeams));
+		formatter.addResults(getMapForTeams(Division.DivisionType.WEST, alWestTeams));
+		
+		rtnStr += formatter.formatResultsAsColumnarStr(8);
+				
+		rtnStr += League.LeagueType.NATIONAL;
+		rtnStr += "\n--------------\n";
+		formatter = new ResultsFormatter();
+		formatter.addResults(getMapForTeams(Division.DivisionType.EAST, nlEastTeams));
+		formatter.addResults(getMapForTeams(Division.DivisionType.CENTRAL, nlCentralTeams));
+		formatter.addResults(getMapForTeams(Division.DivisionType.WEST, nlWestTeams));
+		
+		rtnStr += formatter.formatResultsAsColumnarStr(8);
+		rtnStr += "\n";
+		
+		return rtnStr;
 	}
-
+	
 	private class AdvancedMetricTeamStats implements Comparable<AdvancedMetricTeamStats> {
 
 		private org.startinglineup.component.Team team;
