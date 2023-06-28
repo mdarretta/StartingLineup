@@ -1,20 +1,21 @@
 package org.startinglineup.controller;
 
-import java.util.Observable;
-
 import org.startinglineup.component.Base;
 import org.startinglineup.component.Diamond;
 import org.startinglineup.component.Outcome;
 import org.startinglineup.component.Run;
 
-class RunsController extends Observable {
+import java.beans.PropertyChangeSupport;
 
-    private Diamond diamond;
+class RunsController extends PropertyChangeSupport {
+
+    private static final long serialVersionUID = 1L;
+	private Diamond diamond;
 
     RunsController(InningsController inningsCtrl) {
-        super();
+        super(inningsCtrl);
+        addPropertyChangeListener(inningsCtrl);
         this.diamond = new Diamond();
-        addObserver(inningsCtrl);
     }
     
     void addOutcome(Outcome outcome) {
@@ -26,8 +27,7 @@ class RunsController extends Observable {
     }
     
     private void addRun(Run run) {
-    	setChanged();
-    	notifyObservers(run);
+    	firePropertyChange("Run", null, run);
     }
 
     private void addWalkOrHbpOutcome(Outcome outcome) {

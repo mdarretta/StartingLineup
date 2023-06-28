@@ -1,7 +1,8 @@
 package org.startinglineup.controller;
 
 import java.util.List;
-import java.util.Observable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.startinglineup.component.HalfInning;
 import org.startinglineup.component.Inning;
@@ -10,7 +11,7 @@ import org.startinglineup.component.Out;
 import org.startinglineup.component.Outcome;
 import org.startinglineup.component.Run;
 
-public class InningsController implements SuddenDeathObserver {
+public class InningsController implements PropertyChangeListener {
 
     private Innings innings;
     private int inningPtr;
@@ -47,8 +48,8 @@ public class InningsController implements SuddenDeathObserver {
         }
     }
     
-    public void update(Observable o, Object arg) {
-    	Run run = (Run) arg;
+    public void propertyChange(PropertyChangeEvent e) {
+    	Run run = (Run) e.getNewValue();
     	currentHalf.addRun(run);
     	if (isSuddenDeath()) {
     		isDone = true;

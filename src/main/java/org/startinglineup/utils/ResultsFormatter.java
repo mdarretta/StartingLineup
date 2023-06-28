@@ -27,7 +27,6 @@ public class ResultsFormatter {
 		String rtnStr = "";
 
 		Iterator<StringMap> i = null;
-		StringMap map = null;
 		String str = null;
 		
 		for (int x=0; x < maxRows; x++) {
