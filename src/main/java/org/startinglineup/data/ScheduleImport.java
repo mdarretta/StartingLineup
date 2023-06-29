@@ -1,6 +1,5 @@
 package org.startinglineup.data;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,9 +26,9 @@ public class ScheduleImport extends TemplattedFileImport {
 	private int endingGame = 0;
 
 	
-	public ScheduleImport(File file) throws FileImportException, ParseException {
+	public ScheduleImport(String filename) throws FileImportException, ParseException {
 		
-		super(file);
+		super(filename);
                 Schedule.getInstance().clear();
 		teamGameNumberMap = new HashMap<String, Integer>();
 		
@@ -52,8 +51,8 @@ public class ScheduleImport extends TemplattedFileImport {
 	
 	
 	protected void instantiateTemplate() throws FileImportException {
-        this.reader = new TemplateReader(new File(
-        		Properties.getInstance().get(Properties.SCHEDULE_IMPORT_TEMPLATE_PROP))) {
+        this.reader = new TemplateReader(
+        		Properties.getInstance().get(Properties.SCHEDULE_IMPORT_TEMPLATE_PROP)) {
         };
         
         reader.run();

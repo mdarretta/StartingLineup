@@ -1,6 +1,5 @@
 package org.startinglineup.data;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -23,8 +22,8 @@ public class TemplateReader extends CSVImport {
 	private Template.TemplateItem currItem = null;
 	private HashMap<Template.TemplateItem, String> headerItems;
 		
-	public TemplateReader(File file) {
-		super(file);
+	public TemplateReader(String pathname) {
+		super(pathname);
 		this.template = new Template(1000);
 		this.headerItems = new HashMap<Template.TemplateItem, String>();
 	}

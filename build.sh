@@ -1,1 +1,2 @@
-mvn clean package
+mvn clean javadoc:javadoc
+mvn package

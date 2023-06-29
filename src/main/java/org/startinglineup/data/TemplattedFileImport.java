@@ -1,7 +1,5 @@
 package org.startinglineup.data;
 
-import java.io.File;
-
 import org.startinglineup.StartingLineupException;
 import org.startinglineup.component.UniqueComponent;
 
@@ -15,8 +13,8 @@ public abstract class TemplattedFileImport extends CSVImport {
 	protected int dataIdx = 0;
 	protected boolean isFirstLine = true;
 	
-	public TemplattedFileImport(File file) throws FileImportException {
-		super(file);
+	public TemplattedFileImport(String pathname) throws FileImportException {
+		super(pathname);
 		instantiateTemplate();
 	}
 
@@ -67,7 +65,7 @@ public abstract class TemplattedFileImport extends CSVImport {
 			}
 			
 		} catch (Exception e) {
-			throw new FileImportException("Exception processing file: " + file.getAbsolutePath(), e);
+			throw new FileImportException("Exception processing file: " + pathname, e);
 		}
 	}
 	

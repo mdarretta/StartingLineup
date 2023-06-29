@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -20,7 +21,14 @@ import javax.swing.GroupLayout.Alignment;
 
 import org.startinglineup.component.AdvancedMetric;
 import org.startinglineup.Modeler;
+import org.startinglineup.Properties;
 
+/**
+ * Main application window that is an extension of the <code>JFrame</code>
+ * class. All application interactions will be received by this window.
+ * 
+ * @author Mike Darretta
+ */
 public class MainWindow extends JFrame implements WindowFocusListener {
 
 	private static final long serialVersionUID = 1L;
@@ -38,8 +46,14 @@ public class MainWindow extends JFrame implements WindowFocusListener {
 	private JCheckBox WARcb;
 	private JCheckBox WAAcb;
 	
+	/**
+	 * The model for this viewer.
+	 */
 	private Modeler modeler;
 
+	/**
+	 * Instantiates the window and the modeler.
+	 */
 	public MainWindow() {
 
 		super("Starting Lineup");
@@ -47,10 +61,9 @@ public class MainWindow extends JFrame implements WindowFocusListener {
 		createFrame();
 	}
 
-	public void show2() {
-		this.setVisible(true);
-	}
-
+	/**
+	 * Creates this <code>JFrame</code> instance.
+	 */
 	private void createFrame() {
 		this.setSize(800, 800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,14 +76,26 @@ public class MainWindow extends JFrame implements WindowFocusListener {
 		this.addWindowFocusListener(this);
 	}
 
+	/**
+	 * Placeholder for future focus improvements.
+	 * @param e The window event.
+	 */
 	public void windowGainedFocus(WindowEvent e) {
 		// placeholder
 	}
 	
+	/**
+	 * Placeholder for future focus improvements.
+	 * @param e The window event.
+	 */
 	public void windowLostFocus(WindowEvent e) {
 		// placeholder
 	}
 
+	/**
+	 * Creates the layout as a <code>GroupLayout</code>
+	 * @return The layout.
+	 */
 	private GroupLayout createLayout() {
 		GroupLayout layout = new GroupLayout(panel);
 
@@ -131,6 +156,10 @@ public class MainWindow extends JFrame implements WindowFocusListener {
 		return layout;
 	}
 
+	/**
+	 * Creates the clear button.
+	 * @return The clear button.
+	 */
 	private JButton createClearBtn() {
 		JButton button = new JButton("Clear Results");
 		button.addActionListener(new ActionListener() {
@@ -143,6 +172,10 @@ public class MainWindow extends JFrame implements WindowFocusListener {
 		return button;
 	}
 
+	/**
+	 * Creates the create button.
+	 * @return The create button.
+	 */
 	private JButton createStartBtn() {
 		modeler = new Modeler();
 
@@ -172,41 +205,75 @@ public class MainWindow extends JFrame implements WindowFocusListener {
 		return button;
 	}
 	
+	/**
+	 * Creates the save button.
+	 * @return The save button.
+	 */
 	private JButton createSaveBtn() {
 		JButton button = new JButton("Save Properties");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				modeler.export(numSeasonsTF.getValue(), startDateTF.getValue(), endDateTF.getValue(),
-						startGameTF.getValue(), endGameTF.getValue());
+				try {
+					modeler.export(numSeasonsTF.getValue(), startDateTF.getValue(), endDateTF.getValue(),
+							startGameTF.getValue(), endGameTF.getValue());
+
+					JOptionPane.showMessageDialog(null, "Properties saved to " + Properties.PATHNAME + ".",
+							"Confirmation", JOptionPane.INFORMATION_MESSAGE, null);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 
 		return button;
 	}
 
+	/**
+	 * Inner class to encapsulate a combination of a <code>JTextField</code>
+	 * along with its associated <code>JLabel</code>.
+	 */
 	private class TextField {
 
+		/**
+		 * The field.
+		 */
 		protected JTextField textField;
+		
+		/**
+		 * The label.
+		 */
 		protected JLabel label;
 
-		@SuppressWarnings("unused")
-		protected TextField(String label) {
-			this(label, "");
-		}
-
+		/**
+		 * Instantiates this class for a label and a default field value.
+		 * @param label The label.
+		 * @param value The default field value.
+		 */
 		protected TextField(String label, String value) {
 			this.label = new JLabel(label, SwingConstants.RIGHT);
 			this.textField = new JTextField(value, 40);
 		}
 
+		/**
+		 * Returns the label.
+		 * @return The label.
+		 */
 		protected JLabel getLabel() {
 			return label;
 		}
 
+		/**
+		 * Returns the text field.
+		 * @return THe text field.
+		 */
 		protected JTextField getField() {
 			return textField;
 		}
 
+		/**
+		 * Returns the text field value.
+		 * @return The text field value.
+		 */
 		protected String getValue() {
 			return textField.getText();
 		}

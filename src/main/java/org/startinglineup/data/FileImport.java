@@ -1,25 +1,25 @@
 package org.startinglineup.data;
 
-import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public abstract class FileImport {
 	
-	/** The import file */
-	protected File file;
-	
 	/** The string to delineate patterns */
 	protected String pattern;
 	
+	/** The file pathname to import */
+	protected String pathname;
+	
 	/**
-	 * Constructor for a file.
-	 * @param file The file to process.
+	 * Constructor for a particular file pathname.
+	 * @param pathname The path to the file.
 	 */
-	public FileImport(File file) {
-		this.file = file;
+	public FileImport(String pathname) {
+		this.pathname = pathname;
 	}
 	
 	/**
@@ -32,13 +32,14 @@ public abstract class FileImport {
 		String line = "";
 
 		try {
-			br = new BufferedReader(new FileReader(file));
+			InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(pathname);
+			br = new BufferedReader(new InputStreamReader(stream));
 			while ((line = br.readLine()) != null) {
 				String[] data = line.split(pattern,-1);
 				process(data);
 			}
 		} catch (FileNotFoundException e) {
-			throw new FileImportException("Cannot find file: " + file.getAbsolutePath(), e);
+			throw new FileImportException("Cannot find file: " + pathname, e);
 		} catch (IOException e) {
 			throw new FileImportException(e);
 		} catch (FileImportException e) {

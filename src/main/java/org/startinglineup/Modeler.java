@@ -20,193 +20,299 @@ import org.startinglineup.simulator.Standings;
 import org.startinglineup.simulator.StandingsByAdvancedMetrics;
 import org.startinglineup.utils.Formatter;
 
-import java.io.File;
 
+/**
+ * Model to support simulation execution.
+ * 
+ * @author Mike Darretta
+ */
 public class Modeler {
 
-    private BatterImport batterImport = null;
-    private ScheduleImport scheduleImport = null;
-    private StartingLineupImport lineupImport = null;
-    private PitcherImport pitcherImport = null;
-    private StartingRotationImport rotationImport = null;
-    private PitchingAdvancedMetricsImport pitchingWARImport = null;
-    private OffensiveAdvancedMetricsImport offensiveWARImport = null;
+	/**
+	 * The batter import controller.
+	 */
+	private BatterImport batterImport = null;
 
-    public Modeler() {
-               
-        try {
-            new PropertiesImport().run();
+	/**
+	 * The schedule import controller.
+	 */
+	private ScheduleImport scheduleImport = null;
 
-            batterImport = new BatterImport(new File(
-            		Properties.getInstance().get(Properties.BATTER_IMPORT_FILE_PROP)));
-            batterImport.run(true);           
-            
-            lineupImport = new StartingLineupImport(new File(
-            		Properties.getInstance().get(Properties.LINEUP_IMPORT_FILE_PROP)));
-            lineupImport.run();            		
-            
-            pitcherImport = new PitcherImport(new File(
-            		Properties.getInstance().get(Properties.PITCHER_IMPORT_FILE_PROP)));
-            pitcherImport.run();
-            
-            rotationImport = new StartingRotationImport(new File(
-            		Properties.getInstance().get(Properties.ROTATION_IMPORT_FILE_PROP)));
-            rotationImport.run();
+	/**
+	 * The starting lineup import controller.
+	 */
+	private StartingLineupImport lineupImport = null;
 
-            // Optional import
-            if (!Properties.getInstance().get(Properties.PITCHING_ADVANCED_METRICS_IMPORT_FILE_PROP).equals("")) {
-                pitchingWARImport = new PitchingAdvancedMetricsImport(new File(
-                        Properties.getInstance().get(Properties.PITCHING_ADVANCED_METRICS_IMPORT_FILE_PROP)));
-                pitchingWARImport.run();
-            }
+	/**
+	 * The pitcher import controller.
+	 */
+	private PitcherImport pitcherImport = null;
 
-            // Optional import
-            if (!Properties.getInstance().get(Properties.OFFENSIVE_ADVANCED_METRICS_IMPORT_FILE_PROP).equals("")) {
-                offensiveWARImport = new OffensiveAdvancedMetricsImport(new File(
-                        Properties.getInstance().get(Properties.OFFENSIVE_ADVANCED_METRICS_IMPORT_FILE_PROP)));
-                offensiveWARImport.run();
-            }
+	/**
+	 * The starting rotation import controller.
+	 */
+	private StartingRotationImport rotationImport = null;
 
-            // Optional imports
-            scheduleImport = new ScheduleImport(new File(
-            		Properties.getInstance().get(Properties.SCHEDULE_IMPORT_FILE_PROP)));
-            scheduleImport.run();
-        } catch (Exception e) {
-        	e.printStackTrace();
-        	System.exit(0);
-        }
-    }
-    
-    public void run() {
-    	try {
-    		
-    		int numSeasonsToModel = getNumSeasons();
-    		
-    		Standings.getInstance().reset();
-    		BatterStatsMap.getInstance().clear();
-    		
-    		for (int x=0; x < numSeasonsToModel; x++) {
-    			
-        		Collection<GameStats> gameStats = Schedule.getInstance().play();
+	/**
+	 * The pitching advanced metrics import controller.
+	 */
+	private PitchingAdvancedMetricsImport pitchingWARImport = null;
 
-    		Standings.getInstance().addStats(gameStats);
-    		}
-    		
-    		if (numSeasonsToModel > 1) {
-    			Standings.getInstance().normalizeStats(numSeasonsToModel);
-    			BatterStatsMap.getInstance().updateStatsForSingleSeason(numSeasonsToModel);
-    		}
+	/**
+	 * The offense advanced metrics import controller.
+	 */
+	private OffensiveAdvancedMetricsImport offensiveWARImport = null;
 
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    }
+	/**
+	 * Constructor imports all configuration files to prepare for execution.
+	 */
+	public Modeler() {
 
-    public void update(String numSeasons, String startDate, String endDate, String startGame, String endGame) {
-        try {
-            Properties.getInstance().add(Properties.NUMBER_OF_SEASONS_TO_MODEL_PROP, numSeasons);
-            Properties.getInstance().add(Properties.STARTING_DATE_TO_MODEL_PROP, startDate);
-            Properties.getInstance().add(Properties.ENDING_DATE_TO_MODEL_PROP, endDate);
-            Properties.getInstance().add(Properties.STARTING_GAME_TO_MODEL_PROP, startGame);
-            Properties.getInstance().add(Properties.ENDING_GAME_TO_MODEL_PROP, endGame);
+		try {
+			new PropertiesImport().run();
 
-            Standings.getInstance().reset();
-            scheduleImport = new ScheduleImport(new File(
-            		Properties.getInstance().get(Properties.SCHEDULE_IMPORT_FILE_PROP)));
-            scheduleImport.run();
+			batterImport = new BatterImport(Properties.getInstance().get(Properties.BATTER_IMPORT_FILE_PROP));
+			batterImport.run(true);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			lineupImport = new StartingLineupImport(Properties.getInstance().get(Properties.LINEUP_IMPORT_FILE_PROP));
+			lineupImport.run();
 
-    public void export(String numSeasons, String startDate, String endDate, String startGame, String endGame) {
-        try {
-            update(numSeasons, startDate, endDate, startGame, endGame);
-            new PropertiesExport().export(); 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			pitcherImport = new PitcherImport(Properties.getInstance().get(Properties.PITCHER_IMPORT_FILE_PROP));
+			pitcherImport.run();
 
-    public int getNumSeasons() {
-        return Integer.valueOf(Properties.getInstance().get(Properties.NUMBER_OF_SEASONS_TO_MODEL_PROP));
-    }
+			rotationImport = new StartingRotationImport(Properties.getInstance().get(Properties.ROTATION_IMPORT_FILE_PROP));
+			rotationImport.run();
 
-    public String getStartDate() {
-        return Properties.getInstance().get(Properties.STARTING_DATE_TO_MODEL_PROP);
-    }
+			// Optional import
+			if (!Properties.getInstance().get(Properties.PITCHING_ADVANCED_METRICS_IMPORT_FILE_PROP).equals("")) {
+				pitchingWARImport = new PitchingAdvancedMetricsImport(
+						Properties.getInstance().get(Properties.PITCHING_ADVANCED_METRICS_IMPORT_FILE_PROP));
+				pitchingWARImport.run();
+			}
 
-    public String getEndDate() {
-        return Properties.getInstance().get(Properties.ENDING_DATE_TO_MODEL_PROP);
-    }
+			// Optional import
+			if (!Properties.getInstance().get(Properties.OFFENSIVE_ADVANCED_METRICS_IMPORT_FILE_PROP).equals("")) {
+				offensiveWARImport = new OffensiveAdvancedMetricsImport(
+						Properties.getInstance().get(Properties.OFFENSIVE_ADVANCED_METRICS_IMPORT_FILE_PROP));
+				offensiveWARImport.run();
+			}
 
-    public String getStartGame() {
-        return Properties.getInstance().get(Properties.STARTING_GAME_TO_MODEL_PROP);
-    }
+			// Optional imports
+			scheduleImport = new ScheduleImport(
+					Properties.getInstance().get(Properties.SCHEDULE_IMPORT_FILE_PROP));
+			scheduleImport.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
 
-    public String getEndGame() {
-        return Properties.getInstance().get(Properties.ENDING_GAME_TO_MODEL_PROP);
-    }
+	/**
+	 * Executes the simulation.
+	 */
+	public void run() {
+		try {
 
-    public Collection<BatterStats> getLeadersByBattingAverage() {
-        return BatterStatsMap.getInstance().getStatsByBattingAverage();
-    }
+			int numSeasonsToModel = getNumSeasons();
 
-    public Collection<BatterStats> getStatsByBattingAverage() {
-        return BatterStatsMap.getInstance().getStatsByBattingAverage();
-    }
+			Standings.getInstance().reset();
+			BatterStatsMap.getInstance().clear();
 
-    public Collection<BatterStats> getStatsByHomeRuns() {
-        return BatterStatsMap.getInstance().getStatsByHomeRuns();
-    }
+			for (int x = 0; x < numSeasonsToModel; x++) {
 
-    public Collection<BatterStats> getStatsByRbis() {
-        return BatterStatsMap.getInstance().getStatsByRbis();
-    }
+				Collection<GameStats> gameStats = Schedule.getInstance().play();
 
-    public Collection<BatterStats> getStatsByOps() {
-        return BatterStatsMap.getInstance().getStatsByOPS();
-    }
-  
-    public String getStandings() {
-        return Standings.getInstance().toString();
-    }
+				Standings.getInstance().addStats(gameStats);
+			}
 
-    public String getResults() {
+			if (numSeasonsToModel > 1) {
+				Standings.getInstance().normalizeStats(numSeasonsToModel);
+				BatterStatsMap.getInstance().updateStatsForSingleSeason(numSeasonsToModel);
+			}
 
-        String results = "\n";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-        results += Formatter.format("Leaders by BA", 20, 1, false) + " | ";
-        results += Formatter.format("PA", 3, 0, false) + " | ";
-        results += Formatter.format("Avg", 5, 0, false) + " | ";
-        results += Formatter.format("HR", 2, 0, false) + " | ";
-        results += Formatter.format("RBI", 3, 0, false) + " | ";
-        results += Formatter.format("OPS", 0, 0, false) + "\n";
-        results += "-------------\n";
-        results += BatterStatsMap.getInstance().forString(
-                        BatterStatsMap.getInstance().getStatsByBattingAverage(), 10);
-        results += "\n";
-        results += "Leaders by Home Runs\n";
-        results += "--------------------\n";
-        results += BatterStatsMap.getInstance().forString(
-                        BatterStatsMap.getInstance().getStatsByHomeRuns(), 10);
-        results += "\n";
-        results += "Leaders by RBIs\n";
-        results += "---------------\n";
-        results += BatterStatsMap.getInstance().forString(
-                        BatterStatsMap.getInstance().getStatsByRbis(), 10);
-        results += "\n";
-        results += "Leaders by OPS\n";
-        results += "--------------\n";
-        results += BatterStatsMap.getInstance().forString(
-                        BatterStatsMap.getInstance().getStatsByOPS(), 10);
-        results += Standings.getInstance();
-        
-        return results;
-    }
-    
-    public String getAdvancedMetricResults(AdvancedMetric.MetricType type) {
-        return new StandingsByAdvancedMetrics(type).toString();
-    }
+	/**
+	 * Updates the imported properties based on the view inputs.
+	 * 
+	 * @param numSeasons The number of seasons to simulate.
+	 * @param startDate  The (optional) start date for the simulation.
+	 * @param endDate    The (optional) end date for the simulation.
+	 * @param startGame  The (optional) starting game number for the simulation.
+	 * @param endGame    The (optional) ending game number for the simulation.
+	 */
+	public void update(String numSeasons, String startDate, String endDate, String startGame, String endGame) {
+		try {
+			Properties.getInstance().add(Properties.NUMBER_OF_SEASONS_TO_MODEL_PROP, numSeasons);
+			Properties.getInstance().add(Properties.STARTING_DATE_TO_MODEL_PROP, startDate);
+			Properties.getInstance().add(Properties.ENDING_DATE_TO_MODEL_PROP, endDate);
+			Properties.getInstance().add(Properties.STARTING_GAME_TO_MODEL_PROP, startGame);
+			Properties.getInstance().add(Properties.ENDING_GAME_TO_MODEL_PROP, endGame);
+
+			Standings.getInstance().reset();
+			scheduleImport = new ScheduleImport(Properties.getInstance().get(Properties.SCHEDULE_IMPORT_FILE_PROP));
+			scheduleImport.run();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Exports the updated property values based on the view imputs.
+	 * 
+	 * @param numSeasons The number of seasons to simulate.
+	 * @param startDate  The (optional) start date for the simulation.
+	 * @param endDate    The (optional) end date for the simulation.
+	 * @param startGame  The (optional) starting game number for the simulation.
+	 * @param endGame    The (optional) ending game number for the simulation.
+	 * @exception StartingLineupException Exception wrapper.
+	 */
+	public void export(String numSeasons, String startDate, String endDate, String startGame, String endGame)
+	    throws StartingLineupException {
+		
+		try {
+			update(numSeasons, startDate, endDate, startGame, endGame);
+			new PropertiesExport().export();
+		} catch (Exception e) {
+			throw new StartingLineupException(e);
+		}
+	}
+
+	/**
+	 * Returns the number of seasons to simulate.
+	 * 
+	 * @return The number of seasons.
+	 */
+	public int getNumSeasons() {
+		return Integer.valueOf(Properties.getInstance().get(Properties.NUMBER_OF_SEASONS_TO_MODEL_PROP));
+	}
+
+	/**
+	 * Returns the simulation start date.
+	 * 
+	 * @return The simulation start date.
+	 */
+	public String getStartDate() {
+		return Properties.getInstance().get(Properties.STARTING_DATE_TO_MODEL_PROP);
+	}
+
+	/**
+	 * Returns the simulation end date.
+	 * 
+	 * @return The simulation end date.
+	 */
+	public String getEndDate() {
+		return Properties.getInstance().get(Properties.ENDING_DATE_TO_MODEL_PROP);
+	}
+
+	/**
+	 * Returns the simulation start game.
+	 * 
+	 * @return The simulation start game.
+	 */
+	public String getStartGame() {
+		return Properties.getInstance().get(Properties.STARTING_GAME_TO_MODEL_PROP);
+	}
+
+	/**
+	 * Returns the simulation end game.
+	 * 
+	 * @return The simulation end game.
+	 */
+	public String getEndGame() {
+		return Properties.getInstance().get(Properties.ENDING_GAME_TO_MODEL_PROP);
+	}
+
+	/**
+	 * Returns a collection of batter stats, sorted by batting average.
+	 * 
+	 * @return a collection of batter stats.
+	 */
+	public Collection<BatterStats> getStatsByBattingAverage() {
+		return BatterStatsMap.getInstance().getStatsByBattingAverage();
+	}
+
+	/**
+	 * Returns a collection of batter stats, sorted by home runs.
+	 * 
+	 * @return a collection of batter stats.
+	 */
+	public Collection<BatterStats> getStatsByHomeRuns() {
+		return BatterStatsMap.getInstance().getStatsByHomeRuns();
+	}
+
+	/**
+	 * Returns a collection of batter stats, sorted by RBIs.
+	 * 
+	 * @return a collection of batter stats.
+	 */
+	public Collection<BatterStats> getStatsByRbis() {
+		return BatterStatsMap.getInstance().getStatsByRbis();
+	}
+
+	/**
+	 * Returns a collection of batter stats, sorted by OPS.
+	 * 
+	 * @return a collection of batter stats.
+	 */
+	public Collection<BatterStats> getStatsByOps() {
+		return BatterStatsMap.getInstance().getStatsByOPS();
+	}
+
+	/**
+	 * Returns the standings generated by the simulation.
+	 * 
+	 * @return The standings.
+	 */
+	public String getStandings() {
+		return Standings.getInstance().toString();
+	}
+
+	/**
+	 * Returns a formatted string to display the results of the simulation.
+	 * 
+	 * @return The simulation results.
+	 */
+	public String getResults() {
+
+		String results = "\n";
+
+		results += Formatter.format("Leaders by BA", 20, 1, false) + " | ";
+		results += Formatter.format("PA", 3, 0, false) + " | ";
+		results += Formatter.format("Avg", 5, 0, false) + " | ";
+		results += Formatter.format("HR", 2, 0, false) + " | ";
+		results += Formatter.format("RBI", 3, 0, false) + " | ";
+		results += Formatter.format("OPS", 0, 0, false) + "\n";
+		results += "-------------\n";
+		results += BatterStatsMap.getInstance().forString(BatterStatsMap.getInstance().getStatsByBattingAverage(), 10);
+		results += "\n";
+		results += "Leaders by Home Runs\n";
+		results += "--------------------\n";
+		results += BatterStatsMap.getInstance().forString(BatterStatsMap.getInstance().getStatsByHomeRuns(), 10);
+		results += "\n";
+		results += "Leaders by RBIs\n";
+		results += "---------------\n";
+		results += BatterStatsMap.getInstance().forString(BatterStatsMap.getInstance().getStatsByRbis(), 10);
+		results += "\n";
+		results += "Leaders by OPS\n";
+		results += "--------------\n";
+		results += BatterStatsMap.getInstance().forString(BatterStatsMap.getInstance().getStatsByOPS(), 10);
+		results += Standings.getInstance();
+
+		return results;
+	}
+
+	/**
+	 * Returns a formatted string to display the calculated results based on
+	 * advanced metrics. These results are independent of the simulation results.
+	 * 
+	 * @return The results calculated by the advanced metrics.
+	 */
+	public String getAdvancedMetricResults(AdvancedMetric.MetricType type) {
+		return new StandingsByAdvancedMetrics(type).toString();
+	}
 }

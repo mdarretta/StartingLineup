@@ -1,30 +1,30 @@
 package org.startinglineup.data;
 
-import java.io.File;
+import java.util.Enumeration;
 import org.startinglineup.Properties;
+import org.startinglineup.StartingLineupException;
 
-public class PropertiesImport extends FileImport {
-	
+public class PropertiesImport {
+
 	public PropertiesImport() {
-		super(new File("conf/startingLineup.properties"));
-		super.pattern = "=";
+		super();
 	}
 	
-	public void process(String[] data) throws FileImportException {
+	public void run() throws StartingLineupException {
 		try {
-                    Properties.getInstance().setPathname(file.getAbsolutePath());
-		    String key = null;
-		    String value = null;
-		    
-			key = data[0].trim();
-			if (data.length > 1) {
-				value = data[1].trim();
+			java.util.Properties props = new java.util.Properties();
+			props.load(ClassLoader.getSystemClassLoader().getResourceAsStream(
+					Properties.PATHNAME));
+			Enumeration<Object> keys = props.keys();
+			String key = null;
+			while (keys.hasMoreElements()) {
+				key = (String) keys.nextElement();
+				if (!key.startsWith("#") && (!key.trim().equals(""))) {
+					Properties.getInstance().add(key, props.getProperty(key));
+				}
 			}
-                        if (!key.startsWith("#") && (!key.trim().equals(""))) {
-			    Properties.getInstance().add(key, value);
-                        }
 		} catch (Exception e) {
-			throw new FileImportException("Exception processing file: " + file.getAbsolutePath(), e);
+			throw new StartingLineupException("Exception processing properties file.");
 		}
 	}
 }

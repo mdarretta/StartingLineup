@@ -1,7 +1,5 @@
 package org.startinglineup.data;
 
-import java.io.File;
-
 import org.startinglineup.Properties;
 import org.startinglineup.StartingLineupException;
 import org.startinglineup.component.Pitcher;
@@ -13,13 +11,13 @@ public class StartingRotationImport extends StartingPlayerImport {
 	private Team team;
 	private Pitcher pitcher;
 
-	public StartingRotationImport(File file) throws FileImportException {
-		super(file);
+	public StartingRotationImport(String pathname) throws FileImportException {
+		super(pathname);
 	}
 
 	protected void instantiateTemplate() throws FileImportException {
-        this.reader = new TemplateReader(new File(
-        		Properties.getInstance().get(Properties.ROTATION_IMPORT_TEMPLATE_PROP)));
+        this.reader = new TemplateReader(
+        		Properties.getInstance().get(Properties.ROTATION_IMPORT_TEMPLATE_PROP));
         reader.run();		
 	}
 

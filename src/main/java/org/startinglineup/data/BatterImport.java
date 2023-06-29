@@ -1,7 +1,5 @@
 package org.startinglineup.data;
 
-import java.io.File;
-
 import org.startinglineup.Properties;
 import org.startinglineup.StartingLineupException;
 import org.startinglineup.component.Batter;
@@ -11,8 +9,8 @@ public class BatterImport extends TemplattedFileImport {
 	
 	private Batter batter;
 	
-	public BatterImport(File file) throws FileImportException {
-		super(file);
+	public BatterImport(String pathname) throws FileImportException {
+		super(pathname);
 	}
 	
 	/**
@@ -33,8 +31,8 @@ public class BatterImport extends TemplattedFileImport {
 	}
 	
 	protected void instantiateTemplate() throws FileImportException {
-        this.reader = new TemplateReader(new File(
-        		Properties.getInstance().get(Properties.BATTER_IMPORT_TEMPLATE_PROP)));
+      this.reader = new TemplateReader(Properties.getInstance().get(
+    		  Properties.BATTER_IMPORT_TEMPLATE_PROP));
         reader.run();		
 	}
 

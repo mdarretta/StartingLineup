@@ -1,15 +1,13 @@
 package org.startinglineup.data;
 
-import java.io.File;
-
 public abstract class CSVImport extends FileImport {
 	
 	/**
-	 * Constructor for a file.
-	 * @param file The file to process.
+	 * Constructor a pathname.
+	 * @param pathname The path to the file to import.
 	 */
-	public CSVImport(File file) {
-		super(file);
+	public CSVImport(String pathname) {
+		super(pathname);
 		super.pattern = ",";
 	}
 }

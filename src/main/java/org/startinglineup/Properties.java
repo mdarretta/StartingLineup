@@ -3,12 +3,29 @@ package org.startinglineup;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ * Singleton to store and access external properties.
+ * 
+ * @author Mike Darretta
+ */
 public class Properties {
-	
-	private HashMap<String, String> map;
-	private static Properties instance = new Properties();
-        private String pathname;
 
+	/**
+	 * The property map.
+	 */
+	private HashMap<String, String> map;
+
+	/**
+	 * The singleton instance.
+	 */
+	private static Properties instance = new Properties();
+	
+	/**
+	 * The path to the main properties file.
+	 */
+	private String pathname;
+
+	public static final String PATHNAME = "conf/startinglineup.properties";
 	public static final String BATTER_IMPORT_FILE_PROP = "batterImportFile";
 	public static final String BATTER_IMPORT_TEMPLATE_PROP = "batterImportTemplate";
 	public static final String LINEUP_IMPORT_FILE_PROP = "lineupImportFile";
@@ -30,43 +47,76 @@ public class Properties {
 	public static final String ENDING_GAME_TO_MODEL_PROP = "endingGameToModel";
 	public static final String AT_BAT_RESULT_GENERATOR_CLASS_PROP = "atBatResultGeneratorClass";
 
-	public Properties() {
-		map = new HashMap<String,String>();
+	/**
+	 * Constructor instantiates the properties map.
+	 */
+	private Properties() {
+		map = new HashMap<String, String>();
 	}
-	
+
+	/**
+	 * Returns the singleton instance.
+	 * @return The singleton instance.
+	 */
 	public static Properties getInstance() {
 		return instance;
 	}
-	
+
+	/**
+	 * Adds a property.
+	 * @param key The property key.
+	 * @param value The property value.
+	 */
 	public void add(String key, String value) {
 		map.put(key, value);
 	}
 
+	/**
+	 * Returns a property.
+	 * @param key The property key.
+	 * @return The property value.
+	 */
 	public String get(String key) {
 		return map.get(key);
 	}
 
-        public HashMap<String, String> getProperties() {
-            return map;
-        }
+	/**
+	 * Returns the property map.
+	 * @return The property map.
+	 */
+	public HashMap<String, String> getProperties() {
+		return map;
+	}
 
-        public void setPathname(String pathname) {
-            this.pathname = pathname;
-        }
+	/**
+	 * Sets the main properties file pathname.
+	 * @param pathname The pathname.
+	 */
+	public void setPathname(String pathname) {
+		this.pathname = pathname;
+	}
 
-        public String getPathname() {
-            return pathname;
-        }
+	/**
+	 * Returns the main properties file pathname.
+	 * @return The pathname.
+	 */
+	public String getPathname() {
+		return pathname;
+	}
 
-        public String toString() {
-            String rtnStr = "";
-            Iterator<String> keys = map.keySet().iterator();
-            String key = null;
-            while (keys.hasNext()) {
-                key = keys.next();
-                rtnStr += (key + ":" + get(key) + "\n");
-            }
- 
-            return rtnStr;
-        } 
+	/**
+	 * Returns a stringified version of this instance.
+	 * @return The stringified version of this instance.
+	 */
+	public String toString() {
+		String rtnStr = "";
+		Iterator<String> keys = map.keySet().iterator();
+		String key = null;
+		while (keys.hasNext()) {
+			key = keys.next();
+			rtnStr += (key + ":" + get(key) + "\n");
+		}
+
+		return rtnStr;
+	}
 }

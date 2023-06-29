@@ -1,7 +1,5 @@
 package org.startinglineup.data;
 
-import java.io.File;
-
 import org.startinglineup.StartingLineupException;
 import org.startinglineup.component.Player;
 import org.startinglineup.component.UniqueComponent;
@@ -10,8 +8,8 @@ import org.startinglineup.component.AdvancedMetrics;
 
 public abstract class AdvancedMetricsImport extends PlayerImport {
 	
-	public AdvancedMetricsImport(File file) throws FileImportException {
-		super(file);
+	public AdvancedMetricsImport(String pathname) throws FileImportException {
+		super(pathname);
 	}
 
 	protected void processTarget(UniqueComponent target) throws StartingLineupException {

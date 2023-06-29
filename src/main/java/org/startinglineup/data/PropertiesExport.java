@@ -3,7 +3,7 @@ package org.startinglineup.data;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.HashMap;
 import org.startinglineup.Properties;
 
 public class PropertiesExport {
@@ -14,21 +14,20 @@ public class PropertiesExport {
 	
     public void export() throws IOException, ClassCastException, NullPointerException { 
         java.util.Properties props = new java.util.Properties();
-        Set<String> keys = org.startinglineup.Properties.getInstance().getProperties().keySet();
+		props.load(ClassLoader.getSystemClassLoader().getResourceAsStream(
+				Properties.PATHNAME));
+        HashMap<String, String> currentProps = Properties.getInstance().getProperties();
 
-        Iterator<String> i = keys.iterator();
+        Iterator<String> keys = currentProps.keySet().iterator();
         String key = null;
         String value = null;
-        while (i.hasNext()) {
-            key = i.next();
-            value = org.startinglineup.Properties.getInstance().get(key);
-            if (value == null) {
-                value = "";
-            }
+        while (keys.hasNext()) {
+            key = keys.next();
+            value = Properties.getInstance().get(key);
             props.setProperty(key, value);
         }
 
-        FileOutputStream fos = new FileOutputStream(Properties.getInstance().getPathname());
-        props.store(fos, "Persisting properties"); 
+        FileOutputStream fos = new FileOutputStream(Properties.PATHNAME);
+        props.store(fos, "File updated by user input");
     }
 }

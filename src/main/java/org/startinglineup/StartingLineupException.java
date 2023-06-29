@@ -2,6 +2,7 @@ package org.startinglineup;
 
 /**
  * The base exception handling class for this application.
+ * 
  * @author Mike Darretta
  */
 public class StartingLineupException extends Exception {
