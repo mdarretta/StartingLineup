@@ -4,7 +4,7 @@ import org.startinglineup.component.Outcome;
 
 /**
  * An abstract class used to generate a result for a particular batter/pitcher
- * matchup.
+ * matchup. This is the lowest level engine for the season's simulation.
  * 
  * @author Mike Darretta
  *

@@ -23,8 +23,8 @@ import org.startinglineup.component.Walk;
  * 1. The batter's on-base percentage (OBP).
  * <br>
  * 2. The pitcher's walks/hits per innings pitched (WHIP) This is used to calculate the 
- * opponent OBP for the pitcher, which is slightly different than the more conventional 
- * opponent OBP typically used.
+ * opponent on base percentage (OBP) for the pitcher, which is slightly different than 
+ * the more conventional opponent OBP typically used.
  * <br>
  * 3. The batter's previous season's outcomes (broken out for outs, walks, singles, doubles, 
  * triples, and home runs). <i>(Note: For this release, hit by pitches (HBP) are not included.)</i>
@@ -32,31 +32,46 @@ import org.startinglineup.component.Walk;
  * Using these metrics, a mean percentage of outs, walks, and hits (broken out by type)
  * is calculated for the batter against the particular pitcher. These outcomes (randomly
  * added to a 1000 element array) are then selected using a randomly generated number
- * to determine the outcome.
+ * to determine the outcome. <i>Note: The outs are added last to the array to replace all
+ * existing <code>null</code> outcomes</i>.
  * <p>
- * The algorithm for generating the mean on-base percentage (MP) is:
- * <p>
- * <i>
- * MP = (b(OBP) + ((p(WHIP)*9) / (p(WHIP)*9 + 27))) / 2
- * </i>
- * <p>
- * where <i>b(OBP)</i> is the batter's on-base percentage, and <i>p(WHIP)</i> is the pitcher's walks/hits 
- * per innings pitched.
- * <p>
- * The <i>MP</i> is then used to calculate a straight-line distribution of walks, hit types, 
- * and outs across the 1000 element outcome array for each batter/pitcher matchup. The algorithm
- * used to populate the predicted number of outcomes per type (num(PO)) across the array is:
+ * The algorithm for generating the mean on-base percentage (MOBP) is:
  * <p>
  * <i>
- * num(PO) = (b(num(O) * MP / b(OBP))) / (b(PA) * 1000)
+ * MOBP = (batter(OBP) + ( (pitcher(WHIP)*9) / (pitcher(WHIP)*9 + 27)) ) / 2
  * </i>
  * <p>
- * where <i>b(num(O)</i> is the batter's number of outcomes for type <i>x</i>, <i>b(OBP)</i>
- * is the batter's on-base percentage, and <i>b(PA)</i> is the batter's number of plate appearances
- * (all gathered over a normalized period, typically the prior season).
+ * In short, the mean on base percentage is mean between the batter's OBP + the pitcher's calculated
+ * walk/hits for an entire regulation game, divided by 2. For instance:
  * <p>
- * Finally, a random number between 0 and 999 is generated to select an outcome from the 1000
- * element array.
+ * If a batter's OBP is .400, and a picher gives up 12 hits/walks on average for an entire game, the MOBP is:
+ * <p>
+ * <i>(.400 + 12/27) / 2 = .422</i>
+ * <p>
+ * That is, there is a 42.2% chance that the at bat will results in something other than an out for this matchup.
+ * <p>
+ * The <i>MOBP</i> is then used to calculate a distribution of walks, hit types, and outs 
+ * across the 1000 element outcome array for each batter/pitcher matchup. The algorithm
+ * used to populate the predicted number of predicted outcomes per walk/hit type (pOUT) across 
+ * the array is:
+ * <p>
+ * <i>
+ * pOUT = (batter((outcome per type) * MOBP / batter(OBP))) / (batter(plate appearance) * 1000)
+ * </i>
+ * <p>
+ * In short, the predicted number of outcomes is calculated using the batter's normal outcome per type
+ * (single, double, etc) times the MOBP, divided by the batter's OBP - then divided by the batter's
+ * normalized number of plate appearances.
+ * <p>
+ * If a batter averages 20 home runs in a season, his OBP is .400, he has 600 recorded plate appearances
+ * in a season and the predicted MOBP for the matchup is .422 (see prior calculation), the pOUT is:
+ * <p>
+ * <i>(20 * .422 / .400) / 600 * 1000) = 35.16 (rounded down to 35 home runs per 1000 matchups)
+ * <p>
+ * Once the array is populated for each outcome type, a random number between 0 and 999 is generated
+ * for the particular at bat to select an outcome from the 1000 element array. If the selected element is
+ * anything except an out, the simulation manages advancing any existing runner plus the batter, and
+ * adding runs to the score if needed. Otherwise, an out will be recorded.
  * <p>
  * The benefits of using this algorithm are:
  * <p>
@@ -64,10 +79,7 @@ import org.startinglineup.component.Walk;
  * <br>
  * 2. A better than average pitcher gains an advantage over any hitter.
  * <br>
- * 3. There is a fairly predictable OBP for the matchup (though the actual hit type leans
- * more heavily on the batter's statistics).
- * <br>
- * 4. Due to the randomness of both the array generation and outcome selection, the less
+ * 3. Due to the randomness of both the array generation and outcome selection, the less
  * predictable elements such as errors, outstanding defense, poor decision making, weather-
  * related outcomes, injuries, or even streakiness (to name a few) are given their fair place 
  * over the course of both a single game and an entire season. 
@@ -78,8 +90,9 @@ import org.startinglineup.component.Walk;
  * simplified metrics across a entire season add enough complexity to the engine while 
  * allowing for the less predictable elements mentioned above. As Bill James (the father
  * of Sabermetrics) discovered, any outcome outside of a strikeout or home run is largely
- * attributable to chance. Fine-tuning the engine too much will lead to more predictable
- * results, but less realistic results over the course of a true baseball season.
+ * attributable to chance. (This has been refuted to some degree with new metrics such as
+ * launch angle, exit velocity, etc. But even these metrics rely partially on chance.)
+ * Extensions of this class can utilize such advanced metrics for more fine-grained predictions.
  * <p>
  * <i>Notes:</i>
  * <p>
@@ -96,7 +109,6 @@ import org.startinglineup.component.Walk;
  * power hitter.)
  * 
  * @author Mike Darretta
- *
  */
 public class SimpleAtBatResultGenerator extends AtBatResultGenerator {
 
